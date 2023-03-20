@@ -1,4 +1,4 @@
-package org.painting.alutechorganizer.domain.worker;
+package org.painting.alutechorganizer.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,8 +11,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@Entity
+@MappedSuperclass
 public abstract class Worker {
 
     @Id
@@ -21,5 +20,7 @@ public abstract class Worker {
     private String name;
     private String surname;
     private Date startWorking;
+    @Enumerated
+    private RegionsOfPainting region;
 
 }
