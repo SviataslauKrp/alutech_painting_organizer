@@ -1,5 +1,7 @@
 package org.painting.alutechorganizer;
 
+import org.painting.alutechorganizer.domain.worker.Corrector;
+import org.painting.alutechorganizer.domain.worker.Worker;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
