@@ -1,6 +1,6 @@
 package org.painting.alutechorganizer.domain;
 
-public enum RegionsOfPainting {
+public enum Workspaces {
 
     LOADING1,
     LOADING2,
@@ -12,6 +12,7 @@ public enum RegionsOfPainting {
     UNLOADING1,
     UNLOADING2,
     PASTING1,
-    PASTING2
+    PASTING2,
+    DECORATION
 
 }

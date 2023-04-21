@@ -1,15 +1,16 @@
 package org.painting.alutechorganizer.domain;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import java.util.Set;
 
 @Entity
 @Table(name = "stackers")
-public class Stacker extends Worker {
+public class StackerEntity extends WorkerEntity {
 
-    @Enumerated
     @ElementCollection(targetClass = Roles.class)
-    private List<Roles> roles;
+    private Set<Roles> roles;
 
     private enum Roles {
         LOADER,

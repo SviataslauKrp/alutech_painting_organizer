@@ -5,6 +5,6 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "correctors")
-public class Corrector extends Worker {
+public class CorrectorEntity extends WorkerEntity {
 
 }
