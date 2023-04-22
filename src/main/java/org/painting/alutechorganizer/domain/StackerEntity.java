@@ -1,12 +1,9 @@
 package org.painting.alutechorganizer.domain;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name = "stackers")
 public class StackerEntity extends WorkerEntity {
 
     @ElementCollection(targetClass = Roles.class)

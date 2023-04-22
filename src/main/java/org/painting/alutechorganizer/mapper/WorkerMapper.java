@@ -6,8 +6,12 @@ import org.mapstruct.SubclassMapping;
 import org.painting.alutechorganizer.domain.*;
 import org.painting.alutechorganizer.dto.*;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring",
-        subclassExhaustiveStrategy = SubclassExhaustiveStrategy.RUNTIME_EXCEPTION)
+        subclassExhaustiveStrategy = SubclassExhaustiveStrategy.RUNTIME_EXCEPTION,
+        uses = DateMapper.class
+)
 public interface WorkerMapper {
 
     @SubclassMapping(source = CorrectorEntity.class, target = CorrectorDto.class)
@@ -21,5 +25,7 @@ public interface WorkerMapper {
     @SubclassMapping(source = SeniorWorkerDto.class, target = SeniorWorkerEntity.class)
     @SubclassMapping(source = StackerEntityDto.class, target = StackerEntity.class)
     WorkerEntity toEntity(WorkerDto workerDto);
+
+    List<WorkerDto> toListDto(List<WorkerEntity> entities);
 
 }

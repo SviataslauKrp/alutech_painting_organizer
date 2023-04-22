@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div th:each="worker : ${allWorkers}">
+
+    <div th:text="${worker.getId()}"/><br>
+    <div th:text="${worker.getName()}"/><br>
+    <div th:text="${worker.getSurname()}"/><br>
+    <div th:text="${worker.getStartWorking()}"/><br>
+    <div th:text="${worker.getEmployeeNumber()}"/><br>
+
+
+</div>
+
+
+</body>
+</html>

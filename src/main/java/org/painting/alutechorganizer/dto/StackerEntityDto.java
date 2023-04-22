@@ -3,13 +3,14 @@ package org.painting.alutechorganizer.dto;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 public class StackerEntityDto extends WorkerDto {
 
-    public StackerEntityDto(String name, String surname, Date startWorking, Integer employeeNumber) {
+    public StackerEntityDto(String name, String surname, String startWorking, Integer employeeNumber) {
         super(name, surname, startWorking, employeeNumber);
         this.roles = new HashSet<>();
     }

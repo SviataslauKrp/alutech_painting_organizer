@@ -5,12 +5,13 @@ import lombok.NoArgsConstructor;
 import org.painting.alutechorganizer.domain.Workspaces;
 
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDate;
 import java.util.Date;
 
 @NoArgsConstructor
 public class CorrectorDto extends WorkerDto {
 
-    public CorrectorDto(String name, String surname, Date startWorking, Integer employeeNumber) {
+    public CorrectorDto(String name, String surname, String startWorking, Integer employeeNumber) {
         super(name, surname, startWorking, employeeNumber);
     }
 }

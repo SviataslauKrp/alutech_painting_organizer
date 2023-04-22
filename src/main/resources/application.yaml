@@ -5,6 +5,10 @@ spring:
     username: postgres
     password: postgres
     url: jdbc:postgresql://localhost:5432/postgres
+  mvc:
+    view:
+      suffix: html
   jpa:
     hibernate:
       ddl-auto: create-drop
+    show-sql: true

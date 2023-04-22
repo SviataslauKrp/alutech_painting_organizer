@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
@@ -13,23 +15,23 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 
-@MappedSuperclass
+@Entity
+@Table(name = "workers")
 public abstract class WorkerEntity {
 
     @Id
-    @GeneratedValue(generator = "hibernate-uuid")
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @NotBlank
     private String name;
     @NotBlank
     private String surname;
-    @NotBlank
-    private Date startWorking;
-    @NotBlank
+    @NotNull
+    private LocalDate startWorking;
+    @NotNull
     private Integer employeeNumber;
     @Enumerated
-    @NotBlank
     private Workspaces workspace;
 
 }
