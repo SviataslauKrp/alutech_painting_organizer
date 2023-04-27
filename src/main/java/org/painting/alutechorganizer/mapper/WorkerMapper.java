@@ -1,31 +1,29 @@
 package org.painting.alutechorganizer.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.SubclassExhaustiveStrategy;
-import org.mapstruct.SubclassMapping;
-import org.painting.alutechorganizer.domain.*;
-import org.painting.alutechorganizer.dto.*;
+import org.mapstruct.*;
+import org.painting.alutechorganizer.domain.WorkerEntity;
+import org.painting.alutechorganizer.dto.WorkerDto;
 
 import java.util.List;
 
 @Mapper(componentModel = "spring",
-        subclassExhaustiveStrategy = SubclassExhaustiveStrategy.RUNTIME_EXCEPTION,
-        uses = DateMapper.class
+        uses = WorkplaceMapper.class,
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
 )
 public interface WorkerMapper {
 
-    @SubclassMapping(source = CorrectorEntity.class, target = CorrectorDto.class)
-    @SubclassMapping(source = OperatorEntity.class, target = OperatorDto.class)
-    @SubclassMapping(source = SeniorWorkerEntity.class, target = SeniorWorkerDto.class)
-    @SubclassMapping(source = StackerEntity.class, target = StackerEntityDto.class)
-    WorkerDto toDto(WorkerEntity workerEntity);
+    @Mapping(target = "id", ignore = true)
+    WorkerDto toWorkerDto(WorkerEntity entity);
 
-    @SubclassMapping(source = CorrectorDto.class, target = CorrectorEntity.class)
-    @SubclassMapping(source = OperatorDto.class, target = OperatorEntity.class)
-    @SubclassMapping(source = SeniorWorkerDto.class, target = SeniorWorkerEntity.class)
-    @SubclassMapping(source = StackerEntityDto.class, target = StackerEntity.class)
-    WorkerEntity toEntity(WorkerDto workerDto);
+    @Mapping(target = "startWorking", dateFormat = "yyyy-MM-dd")
+    WorkerEntity toWorkerEntity(WorkerDto dto);
 
-    List<WorkerDto> toListDto(List<WorkerEntity> entities);
+    List<WorkerEntity> toListEntities(List<WorkerDto> dtos);
+
+    List<WorkerDto> toListDtos(List<WorkerEntity> entities);
+
+    void updateWorkerFromDto(WorkerDto workerDto, @MappingTarget WorkerEntity workerEntity);
+
 
 }
+

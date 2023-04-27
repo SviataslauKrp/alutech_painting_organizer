@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+<form th:action="@{/workers/create_worker}" method="post" th:object="${worker}">
+
+    <input type="text" name="name" required th:field="*{name}"><br>
+    <input type="text" name="surname" required th:field="*{surname}"><br>
+    <input type="date" name="startWorking" required th:field="*{startWorking}"><br>
+    <input type="number" name="employeeNumber" required th:field="*{employeeNumber}"><br>
+    <input type="text" name="profession" required th:field="*{profession}"><br>
+    <input type="submit" value="createWorker">
+
+</form>
+
+
+</body>
+</html>

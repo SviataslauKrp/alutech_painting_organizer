@@ -1,6 +1,7 @@
 package org.painting.alutechorganizer.domain;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,16 +9,15 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 
 @Entity
 @Table(name = "workers")
-public abstract class WorkerEntity {
+public class WorkerEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +31,11 @@ public abstract class WorkerEntity {
     private LocalDate startWorking;
     @NotNull
     private Integer employeeNumber;
-    @Enumerated
-    private Workspaces workspace;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private WorkplaceEntity workplace;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private Profession profession;
 
 }

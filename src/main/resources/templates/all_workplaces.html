@@ -5,8 +5,11 @@
     <title>Title</title>
 </head>
 <body>
+<div th:each="workplace : ${allWorkplaces}">
 
-<div th:each="worker : ${allWorkers}">
+  <div th:text="${workplace.getId()}"/>
+  <div th:text="${workplace.getName()}"/>
+  <div th:each="worker : ${workplace.getWorkers}">
 
     <div th:text="${worker.getId()}"/>
     <br>
@@ -19,9 +22,8 @@
     <div th:text="${worker.getEmployeeNumber()}"/>
     <br>
 
+  </div>
 
 </div>
-
-
 </body>
 </html>

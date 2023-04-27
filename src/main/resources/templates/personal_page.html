@@ -6,11 +6,20 @@
 </head>
 <body>
 
-<div th:text="${worker.getEmployeeNumber()}"/><br>
-<div th:text="${worker.getName()}"/><br>
-<div th:text="${worker.getSurname()}"/><br>
-<div th:text="${worker.getStartWorking()}"/><br>
-<div th:text="${worker.getId()}"/><br>
+<div th:text="${worker.getEmployeeNumber()}"/>
+<br>
+<div th:text="${worker.getName()}"/>
+<br>
+<div th:text="${worker.getSurname()}"/>
+<br>
+<div th:text="${worker.getStartWorking()}"/>
+<br>
+<div th:text="${worker.getId()}"/>
+<br>
+
+<form action="/update_worker">
+    <input type="submit" name="update" value="update">
+</form>
 
 
 </body>

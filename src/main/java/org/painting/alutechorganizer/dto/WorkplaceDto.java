@@ -5,24 +5,18 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-public class WorkerDto {
+public class WorkplaceDto {
 
     private Integer id;
 
     private String name;
 
-    private String surname;
-
-    private String startWorking;
-
-    private Integer employeeNumber;
-
-    private WorkplaceDto workplace;
-
-    private String profession;
+    private List<WorkerDto> workers;
 
 }

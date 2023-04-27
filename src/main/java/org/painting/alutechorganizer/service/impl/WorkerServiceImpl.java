@@ -17,6 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 
 @Service
+@Transactional
 public class WorkerServiceImpl implements WorkerService {
 
     private final WorkerRepository repository;
@@ -24,44 +25,50 @@ public class WorkerServiceImpl implements WorkerService {
 
     @Override
     public void saveWorker(WorkerDto workerDto) {
-        WorkerEntity workerEntity = mapper.toEntity(workerDto);
+        WorkerEntity workerEntity = mapper.toWorkerEntity(workerDto);
         repository.save(workerEntity);
     }
 
     @Override
-    public List<WorkerDto> getAllWorkers() {
-        List<WorkerEntity> entities = repository.findAll();
-        if (entities.size() < 1) {
+    public List<WorkerDto> getAllWorkers() throws EmptyBrigadeException {
+
+        List<WorkerEntity> allWorkersEntities = repository.findAll();
+
+        if (allWorkersEntities.size() < 1) {
             throw new EmptyBrigadeException();
         }
-        return mapper.toListDto(entities);
+        return mapper.toListDtos(allWorkersEntities);
+
     }
 
     @Override
-    public WorkerDto getWorkerById(Integer id) {
-        Optional<WorkerEntity> byId = repository.findById(id);
-        if (byId.isPresent()) {
-            return mapper.toDto(byId.get());
+    public WorkerDto getWorkerById(Integer id) throws WorkerNotFoundException {
+
+        Optional<WorkerEntity> optionalWorker = repository.findById(id);
+
+        if (optionalWorker.isPresent()) {
+            return mapper.toWorkerDto(optionalWorker.get());
         } else {
             throw new WorkerNotFoundException();
         }
+
     }
 
     @Override
-    @Transactional
     public void deleteWorkerById(Integer id) {
         repository.deleteById(id);
     }
 
     @Override
-    @Transactional
-    public void updateWorkerById(Integer id) {
+    public void updateWorker(WorkerDto worker, Integer id) {
 
-        Optional<WorkerEntity> byId = repository.findById(id);
-        if (byId.isPresent()) {
+        Optional<WorkerEntity> optionalWorker = repository.findById(id);
 
-
-
+        if (optionalWorker.isPresent()) {
+            mapper.updateWorkerFromDto(worker, optionalWorker.get());
+        } else {
+            throw new WorkerNotFoundException();
         }
+
     }
 }
