@@ -1,6 +1,7 @@
 package org.painting.alutechorganizer.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.painting.alutechorganizer.domain.WorkerEntity;
 import org.painting.alutechorganizer.dto.WorkerDto;
 import org.painting.alutechorganizer.exc.EmptyBrigadeException;
@@ -69,6 +70,23 @@ public class WorkerServiceImpl implements WorkerService {
         } else {
             throw new WorkerNotFoundException();
         }
+
+    }
+
+    @Override
+    public WorkerDto getWorkerByNameOrSurname(String name, String surname) {
+
+        if (StringUtils.isBlank(name) && StringUtils.isBlank(surname)) {
+            throw new IllegalArgumentException();
+        }
+
+        WorkerEntity workerByNameOrSurname = repository.findByNameOrSurname(name, surname);
+
+        if (workerByNameOrSurname == null) {
+            throw new WorkerNotFoundException();
+        }
+
+        return mapper.toWorkerDto(workerByNameOrSurname);
 
     }
 }

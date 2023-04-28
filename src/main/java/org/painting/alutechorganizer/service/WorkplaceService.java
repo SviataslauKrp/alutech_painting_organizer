@@ -17,4 +17,5 @@ public interface WorkplaceService {
 
     void updateWorkplaceById(WorkplaceDto workplace, Integer id);
 
+    WorkplaceDto getWorkplaceByName(String name);
 }

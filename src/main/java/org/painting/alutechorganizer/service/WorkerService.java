@@ -17,4 +17,6 @@ public interface WorkerService {
     void deleteWorkerById(Integer id);
 
     void updateWorker(WorkerDto worker, Integer id);
+
+    WorkerDto getWorkerByNameOrSurname(String name, String surname);
 }

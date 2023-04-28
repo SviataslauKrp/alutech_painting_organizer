@@ -29,8 +29,6 @@ public class WorkerEntity {
     private String surname;
     @NotNull
     private LocalDate startWorking;
-    @NotNull
-    private Integer employeeNumber;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private WorkplaceEntity workplace;

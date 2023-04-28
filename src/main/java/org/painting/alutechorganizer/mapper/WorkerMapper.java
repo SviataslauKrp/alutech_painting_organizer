@@ -12,10 +12,10 @@ import java.util.List;
 )
 public interface WorkerMapper {
 
-    @Mapping(target = "id", ignore = true)
     WorkerDto toWorkerDto(WorkerEntity entity);
 
     @Mapping(target = "startWorking", dateFormat = "yyyy-MM-dd")
+    @Mapping(target = "id", ignore = true)
     WorkerEntity toWorkerEntity(WorkerDto dto);
 
     List<WorkerEntity> toListEntities(List<WorkerDto> dtos);
