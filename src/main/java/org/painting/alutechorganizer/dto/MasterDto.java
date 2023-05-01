@@ -1,5 +1,6 @@
 package org.painting.alutechorganizer.dto;
 
+
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
@@ -9,13 +10,13 @@ import java.util.List;
 @NoArgsConstructor
 @Getter @Setter
 @Builder
-public class WorkplaceDto {
+public class MasterDto {
 
     private Integer id;
-
     @NotBlank
     private String name;
-
+    @NotBlank
+    private String surname;
     private List<WorkerDto> workers;
 
 }

@@ -1,11 +1,10 @@
 package org.painting.alutechorganizer.domain;
 
 import lombok.*;
-import org.painting.alutechorganizer.exc.WorkerNotFoundException;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.ArrayList;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @NoArgsConstructor
@@ -14,25 +13,29 @@ import java.util.List;
 @Builder
 
 @Entity
-@Table(name = "workplaces")
-public class WorkplaceEntity {
+@Table(name = "masters")
+public class MasterEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    Integer id;
 
     @NotBlank
     private String name;
+    @NotBlank
+    private String surname;
 
-    @OneToMany(mappedBy = "workplace",
+    @Transient
+    private final Profession profession = Profession.MASTER;
+
+    @OneToMany(mappedBy = "master",
                fetch = FetchType.EAGER)
     private List<WorkerEntity> workers;
 
     public void addWorker(WorkerEntity worker) {
 
         workers.add(worker);
-        worker.setWorkplace(this);
+        worker.setMaster(this);
 
     }
-
 }

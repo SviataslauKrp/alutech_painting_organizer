@@ -30,16 +30,9 @@ public class WorkplaceController {
         return new ModelAndView("all_Workplaces", "allWorkplaces", allWorkplaces);
     }
 
-    @GetMapping(value = "/workplace_page",
-                params = "id")
+    @GetMapping(value = "/workplace_page")
     public void getWorkplace(@RequestParam Integer id) {
         WorkplaceDto workplaceById = service.getWorkplaceById(id);
-    }
-
-    @GetMapping(value = "/workplace_page",
-                params = "name")
-    public void getWorkplace(@RequestParam String name) {
-        WorkplaceDto workplaceDto = service.getWorkplaceByName(name);
     }
 
     @DeleteMapping("/workplace_page")
@@ -50,6 +43,20 @@ public class WorkplaceController {
     @PutMapping("/workplace_page")
     public void updateWorkplaceById(@Valid WorkplaceDto workplace, @RequestParam Integer id) {
         service.updateWorkplaceById(workplace, id);
+    }
+
+    @PostMapping("/add_worker_to_workplace")
+    public void addWorkerToWorkplace(@RequestParam Integer workerId, @RequestParam Integer workplaceId) {
+
+        service.addWorkerToWorkplace(workerId, workplaceId);
+
+    }
+
+    @DeleteMapping("/remove_worker_to_workplace")
+    public void removeWorkerFromWorkplace(@RequestParam Integer workerId, @RequestParam Integer workplaceId) {
+
+        service.removeWorkerFromWorkplace(workerId, workplaceId);
+
     }
 
 }

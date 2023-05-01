@@ -1,18 +1,15 @@
 package org.painting.alutechorganizer.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
-@Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Getter @Setter
 @Builder
 
 @Entity
@@ -30,10 +27,24 @@ public class WorkerEntity {
     @NotNull
     private LocalDate startWorking;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     private WorkplaceEntity workplace;
     @NotNull
     @Enumerated(EnumType.STRING)
     private Profession profession;
+
+    @ManyToOne
+    private MasterEntity master;
+
+    public boolean isAvailable() {
+        return workplace == null;
+    }
+
+    public void leaveWorkplace() {
+        workplace = null;
+    }
+    public void getAwayFromMaster() {
+        master = null;
+    }
 
 }
