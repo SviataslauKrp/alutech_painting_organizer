@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class WorkerController {
     private final WorkerService service;
 
     @PostMapping("/create_worker")
-    public void saveWorker(WorkerDto worker) {
+    public void saveWorker(@Valid WorkerDto worker) {
         service.saveWorker(worker);
     }
 
@@ -28,10 +29,20 @@ public class WorkerController {
         return "create_worker";
     }
 
-    @GetMapping("/personal_page")
-    public ModelAndView getWorkerById(@RequestParam Integer id) {
+    @GetMapping(value = "/personal_page",
+                params = "id")
+    public ModelAndView getWorker(@RequestParam Integer id) {
 
         WorkerDto worker = service.getWorkerById(id);
+        return new ModelAndView("personal_page", "worker", worker);
+
+    }
+
+    @GetMapping(value = "/personal_page")
+    public ModelAndView getWorker(@RequestParam(required = false) String name,
+                                  @RequestParam(required = false) String surname) {
+
+        WorkerDto worker = service.getWorkerByNameOrSurname(name, surname);
         return new ModelAndView("personal_page", "worker", worker);
 
     }

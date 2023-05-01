@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class WorkplaceController {
     private final WorkplaceService service;
 
     @PostMapping("/create_workplace")
-    public void createWorkplace(WorkplaceDto workplace) {
+    public void createWorkplace(@Valid WorkplaceDto workplace) {
         service.saveWorkplace(workplace);
     }
 
@@ -29,9 +30,16 @@ public class WorkplaceController {
         return new ModelAndView("all_Workplaces", "allWorkplaces", allWorkplaces);
     }
 
-    @GetMapping("/workplace_page")
-    public void getWorkplaceById(@RequestParam Integer id) {
+    @GetMapping(value = "/workplace_page",
+                params = "id")
+    public void getWorkplace(@RequestParam Integer id) {
         WorkplaceDto workplaceById = service.getWorkplaceById(id);
+    }
+
+    @GetMapping(value = "/workplace_page",
+                params = "name")
+    public void getWorkplace(@RequestParam String name) {
+        WorkplaceDto workplaceDto = service.getWorkplaceByName(name);
     }
 
     @DeleteMapping("/workplace_page")
@@ -40,7 +48,7 @@ public class WorkplaceController {
     }
 
     @PutMapping("/workplace_page")
-    public void updateWorkplaceById(WorkplaceDto workplace, @RequestParam Integer id) {
+    public void updateWorkplaceById(@Valid WorkplaceDto workplace, @RequestParam Integer id) {
         service.updateWorkplaceById(workplace, id);
     }
 

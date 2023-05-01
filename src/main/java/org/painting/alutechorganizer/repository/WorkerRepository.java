@@ -5,5 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface WorkerRepository extends JpaRepository<WorkerEntity, Integer> {
 
+    WorkerEntity findByNameOrSurname(String name, String Surname);
 
 }

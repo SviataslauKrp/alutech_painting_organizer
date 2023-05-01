@@ -1,6 +1,7 @@
 package org.painting.alutechorganizer.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.painting.alutechorganizer.domain.WorkplaceEntity;
 import org.painting.alutechorganizer.dto.WorkerDto;
 import org.painting.alutechorganizer.dto.WorkplaceDto;
@@ -72,5 +73,20 @@ public class WorkplaceServiceImpl implements WorkplaceService {
             throw new WorkplaceException();
         }
 
+    }
+
+    @Override
+    public WorkplaceDto getWorkplaceByName(String name) {
+
+        if (StringUtils.isBlank(name)) {
+            throw new IllegalArgumentException();
+        }
+
+        WorkplaceEntity workplaceEntity = repository.findByName(name);
+
+        if (workplaceEntity == null) {
+            throw new WorkplaceException();
+        }
+        return mapper.toWorkplaceDto(workplaceEntity);
     }
 }
