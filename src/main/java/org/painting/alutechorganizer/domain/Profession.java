@@ -5,6 +5,7 @@ public enum Profession {
     STACKER,
     CORRECTOR,
     OPERATOR,
-    SENIOR_WORKER
+    SENIOR_WORKER,
+    MASTER
 
 }

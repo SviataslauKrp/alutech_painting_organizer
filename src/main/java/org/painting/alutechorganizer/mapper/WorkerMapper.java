@@ -7,7 +7,7 @@ import org.painting.alutechorganizer.dto.WorkerDto;
 import java.util.List;
 
 @Mapper(componentModel = "spring",
-        uses = WorkplaceMapper.class,
+        uses = {MasterMapper.class, WorkplaceMapper.class},
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
 )
 public interface WorkerMapper {
@@ -15,7 +15,6 @@ public interface WorkerMapper {
     WorkerDto toWorkerDto(WorkerEntity entity);
 
     @Mapping(target = "startWorking", dateFormat = "yyyy-MM-dd")
-    @Mapping(target = "id", ignore = true)
     WorkerEntity toWorkerEntity(WorkerDto dto);
 
     List<WorkerEntity> toListEntities(List<WorkerDto> dtos);
@@ -23,7 +22,6 @@ public interface WorkerMapper {
     List<WorkerDto> toListDtos(List<WorkerEntity> entities);
 
     void updateWorkerFromDto(WorkerDto workerDto, @MappingTarget WorkerEntity workerEntity);
-
 
 }
 

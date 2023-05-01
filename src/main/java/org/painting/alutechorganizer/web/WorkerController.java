@@ -1,6 +1,7 @@
 package org.painting.alutechorganizer.web;
 
 import lombok.RequiredArgsConstructor;
+import org.painting.alutechorganizer.dto.MasterDto;
 import org.painting.alutechorganizer.dto.WorkerDto;
 import org.painting.alutechorganizer.service.WorkerService;
 import org.springframework.stereotype.Controller;
@@ -29,20 +30,10 @@ public class WorkerController {
         return "create_worker";
     }
 
-    @GetMapping(value = "/personal_page",
-                params = "id")
-    public ModelAndView getWorker(@RequestParam Integer id) {
+    @GetMapping(value = "/personal_page")
+    public ModelAndView getWorkerById(@RequestParam Integer id) {
 
         WorkerDto worker = service.getWorkerById(id);
-        return new ModelAndView("personal_page", "worker", worker);
-
-    }
-
-    @GetMapping(value = "/personal_page")
-    public ModelAndView getWorker(@RequestParam(required = false) String name,
-                                  @RequestParam(required = false) String surname) {
-
-        WorkerDto worker = service.getWorkerByNameOrSurname(name, surname);
         return new ModelAndView("personal_page", "worker", worker);
 
     }
@@ -61,7 +52,7 @@ public class WorkerController {
     }
 
     @PutMapping("/personal_page")
-    public void updateWorkerById(WorkerDto worker, Integer id) {
+    public void updateWorkerById(WorkerDto worker, @RequestParam Integer id) {
         service.updateWorker(worker, id);
     }
 

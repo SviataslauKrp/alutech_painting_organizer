@@ -3,8 +3,8 @@ package org.painting.alutechorganizer.repository;
 import org.painting.alutechorganizer.domain.WorkplaceEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface WorkplaceRepository extends JpaRepository<WorkplaceEntity, Integer> {
+import java.util.Optional;
 
-    WorkplaceEntity findByName(String name);
+public interface WorkplaceRepository extends JpaRepository<WorkplaceEntity, Integer> {
 
 }

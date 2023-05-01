@@ -1,16 +1,13 @@
 package org.painting.alutechorganizer.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter @Setter
 @Builder
 public class WorkerDto {
 
@@ -29,5 +26,6 @@ public class WorkerDto {
 
     @NotBlank
     private String profession;
+    private MasterDto master;
 
 }

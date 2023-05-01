@@ -18,5 +18,4 @@ public interface WorkerService {
 
     void updateWorker(WorkerDto worker, Integer id);
 
-    WorkerDto getWorkerByNameOrSurname(String name, String surname);
 }

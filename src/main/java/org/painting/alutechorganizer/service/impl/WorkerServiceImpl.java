@@ -45,13 +45,8 @@ public class WorkerServiceImpl implements WorkerService {
     @Override
     public WorkerDto getWorkerById(Integer id) throws WorkerNotFoundException {
 
-        Optional<WorkerEntity> optionalWorker = repository.findById(id);
-
-        if (optionalWorker.isPresent()) {
-            return mapper.toWorkerDto(optionalWorker.get());
-        } else {
-            throw new WorkerNotFoundException();
-        }
+        WorkerEntity workerEntity = repository.findById(id).orElseThrow(WorkerNotFoundException::new);
+        return mapper.toWorkerDto(workerEntity);
 
     }
 
@@ -61,32 +56,11 @@ public class WorkerServiceImpl implements WorkerService {
     }
 
     @Override
-    public void updateWorker(WorkerDto worker, Integer id) {
+    public void updateWorker(WorkerDto workerDto, Integer id) {
 
-        Optional<WorkerEntity> optionalWorker = repository.findById(id);
-
-        if (optionalWorker.isPresent()) {
-            mapper.updateWorkerFromDto(worker, optionalWorker.get());
-        } else {
-            throw new WorkerNotFoundException();
-        }
+        WorkerEntity workerEntity = repository.findById(id).orElseThrow(WorkerNotFoundException::new);
+        mapper.updateWorkerFromDto(workerDto, workerEntity);
 
     }
 
-    @Override
-    public WorkerDto getWorkerByNameOrSurname(String name, String surname) {
-
-        if (StringUtils.isBlank(name) && StringUtils.isBlank(surname)) {
-            throw new IllegalArgumentException();
-        }
-
-        WorkerEntity workerByNameOrSurname = repository.findByNameOrSurname(name, surname);
-
-        if (workerByNameOrSurname == null) {
-            throw new WorkerNotFoundException();
-        }
-
-        return mapper.toWorkerDto(workerByNameOrSurname);
-
-    }
 }
