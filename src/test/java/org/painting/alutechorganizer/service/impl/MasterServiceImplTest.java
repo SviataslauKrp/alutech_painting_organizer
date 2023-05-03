@@ -6,7 +6,6 @@ import org.mockito.*;
 import org.painting.alutechorganizer.domain.MasterEntity;
 import org.painting.alutechorganizer.domain.WorkerEntity;
 import org.painting.alutechorganizer.dto.MasterDto;
-import org.painting.alutechorganizer.dto.WorkerDto;
 import org.painting.alutechorganizer.exc.EmptyMastersListException;
 import org.painting.alutechorganizer.exc.MasterException;
 import org.painting.alutechorganizer.exc.WorkerNotFoundException;
@@ -35,7 +34,7 @@ class MasterServiceImplTest {
 
     private MasterDto testMasterDto;
     private MasterEntity testMasterEntity;
-    private WorkerEntity worker1, worker2;
+    private WorkerEntity workerWithMaster, workerWithoutMaster;
 
     @BeforeEach
     void init() {
@@ -55,19 +54,19 @@ class MasterServiceImplTest {
                 .workers(new ArrayList<>())
                 .build();
 
-        worker1 = WorkerEntity.builder()
+        workerWithMaster = WorkerEntity.builder()
                 .id(1)
                 .name("testWorkerName1")
                 .surname("testWorkerSurname1")
                 .build();
 
-        worker2 = WorkerEntity.builder()
+        workerWithoutMaster = WorkerEntity.builder()
                 .id(2)
                 .name("testWorkerName2")
                 .surname("testWorkerSurname2")
                 .build();
 
-        testMasterEntity.addWorker(worker1);
+        testMasterEntity.addWorker(workerWithMaster);
 
     }
 
@@ -99,6 +98,7 @@ class MasterServiceImplTest {
         //then
         verify(masterRepository, times(1)).findById(id);
         verify(masterRepository, times(1)).deleteById(id);
+        assertNull(workerWithMaster.getMaster());
 
     }
 
@@ -111,21 +111,6 @@ class MasterServiceImplTest {
 
         //when and then
         assertThrows(MasterException.class, () -> service.deleteMasterById(id));
-
-    }
-
-    @Test
-    void testSetNullToWorkersWhenMasterIsDeleted() {
-
-        //given
-        Integer id = testMasterEntity.getId();
-        when(masterRepository.findById(id)).thenReturn(Optional.of(testMasterEntity));
-
-        //when
-        service.deleteMasterById(id);
-
-        //then
-        assertNull(worker1.getMaster());
 
     }
 
@@ -232,15 +217,17 @@ class MasterServiceImplTest {
     void testAddWorkerToMaster() {
 
         //given
-        when(workerRepository.findById(worker2.getId())).thenReturn(Optional.of(worker2));
-        when(masterRepository.findById(testMasterEntity.getId())).thenReturn(Optional.of(testMasterEntity));
+        Integer worker2Id = workerWithoutMaster.getId();
+        when(workerRepository.findById(worker2Id)).thenReturn(Optional.of(workerWithoutMaster));
+        Integer masterEntityId = testMasterEntity.getId();
+        when(masterRepository.findById(masterEntityId)).thenReturn(Optional.of(testMasterEntity));
 
         //when
-        service.addWorkerToMaster(worker2.getId(), testMasterEntity.getId());
+        service.addWorkerToMaster(workerWithoutMaster.getId(), testMasterEntity.getId());
 
         //then
-        assertEquals(worker2, testMasterEntity.getWorkers().get(1));
-        assertEquals(testMasterEntity, worker2.getMaster());
+        assertEquals(workerWithoutMaster, testMasterEntity.getWorkers().get(1));
+        assertEquals(testMasterEntity, workerWithoutMaster.getMaster());
 
     }
 
@@ -272,13 +259,14 @@ class MasterServiceImplTest {
 
         //given
         when(masterRepository.findById(testMasterEntity.getId())).thenReturn(Optional.of(testMasterEntity));
-        when(workerRepository.findById(worker1.getId())).thenReturn(Optional.of(worker1));
+        when(workerRepository.findById(workerWithMaster.getId())).thenReturn(Optional.of(workerWithMaster));
 
         //when
-        service.removeWorkerFromMaster(worker1.getId(), testMasterEntity.getId());
+        service.removeWorkerFromMaster(workerWithMaster.getId(), testMasterEntity.getId());
 
         //then
         assertEquals(0, testMasterEntity.getWorkers().size());
+        assertNull(workerWithMaster.getMaster());
 
     }
 }

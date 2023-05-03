@@ -1,6 +1,7 @@
 package org.painting.alutechorganizer.domain;
 
 import lombok.*;
+import org.hibernate.jdbc.Work;
 import org.painting.alutechorganizer.exc.WorkerNotFoundException;
 
 import javax.persistence.*;
@@ -32,6 +33,13 @@ public class WorkplaceEntity {
 
         workers.add(worker);
         worker.setWorkplace(this);
+
+    }
+
+    public void removeWorker(WorkerEntity worker) {
+
+        workers.remove(worker);
+        worker.leaveWorkplace();
 
     }
 
