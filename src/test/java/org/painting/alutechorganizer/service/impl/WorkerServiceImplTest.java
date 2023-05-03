@@ -2,9 +2,7 @@ package org.painting.alutechorganizer.service.impl;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 import org.painting.alutechorganizer.domain.Profession;
 import org.painting.alutechorganizer.domain.WorkerEntity;
 import org.painting.alutechorganizer.dto.WorkerDto;
@@ -27,16 +25,16 @@ class WorkerServiceImplTest {
     private WorkerRepository repository;
     @Mock
     private WorkerMapper mapper;
-    private WorkerService service;
+    @InjectMocks
+    private WorkerServiceImpl service;
 
     private WorkerDto testWorkerDto;
     private WorkerEntity testWorkerEntity;
 
     @BeforeEach
-    public void init() {
+    void init() {
 
         MockitoAnnotations.openMocks(this);
-        service = new WorkerServiceImpl(repository, mapper);
 
         testWorkerDto = WorkerDto.builder()
                 .id(1)
@@ -65,7 +63,8 @@ class WorkerServiceImplTest {
         service.saveWorker(testWorkerDto);
 
         //then
-        verify(repository, times(1)).save(testWorkerEntity);
+        verify(mapper, times(1)).toWorkerEntity(any(WorkerDto.class));
+        verify(repository, times(1)).save(any(WorkerEntity.class));
     }
 
     @Test
@@ -146,24 +145,41 @@ class WorkerServiceImplTest {
                 .surname("newSurname")
                 .build();
         WorkerEntity updatedEntity = WorkerEntity.builder()
-                .name("name")
-                .surname("surname")
+                .name("newName")
+                .surname("newSurname")
                 .build();
 
         Integer id = testWorkerEntity.getId();
+        ArgumentCaptor<WorkerEntity> workerEntityArgumentCaptor = ArgumentCaptor.forClass(WorkerEntity.class);
 
-        when(repository.findById(id)).thenReturn(Optional.of(testWorkerEntity));
-        doNothing().when(mapper).updateWorkerFromDto(updatedDto, updatedEntity);
+        when(repository.findById(id)).thenReturn(Optional.of(updatedEntity));
 
         //when
         service.updateWorker(updatedDto, id);
 
         //then
         verify(repository, times(1)).findById(id);
-        verify(mapper, times(1)).updateWorkerFromDto(updatedDto, updatedEntity);
+        verify(mapper, times(1)).updateWorkerFromDto(eq(updatedDto), workerEntityArgumentCaptor.capture());
 
-        assertEquals(updatedDto.getName(), updatedEntity.getName());
-        assertEquals(updatedDto.getSurname(), updatedEntity.getSurname());
+        WorkerEntity value = workerEntityArgumentCaptor.getValue();
+
+        assertEquals(updatedEntity.getName(), value.getName());
+        assertEquals(updatedEntity.getSurname(), value.getSurname());
+
+    }
+
+    @Test
+    void testUpdateWorkerWithWorkerNotFoundException() {
+
+        //given
+        Integer id = testWorkerEntity.getId();
+        when(repository.findById(any(Integer.class))).thenReturn(Optional.empty());
+
+        //when and then
+        assertThrows(WorkerNotFoundException.class, () -> service.updateWorker(any(WorkerDto.class), id));
+
+        verify(repository, times(1)).findById(id);
+        verify(mapper, never()).updateWorkerFromDto(any(WorkerDto.class), any(WorkerEntity.class));
 
     }
 }

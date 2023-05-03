@@ -1,6 +1,7 @@
 package org.painting.alutechorganizer.domain;
 
 import lombok.*;
+import org.hibernate.jdbc.Work;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -36,6 +37,12 @@ public class MasterEntity {
 
         workers.add(worker);
         worker.setMaster(this);
+
+    }
+    public void removeWorker(WorkerEntity worker) {
+
+        workers.remove(worker);
+        worker.getAwayFromMaster();
 
     }
 }

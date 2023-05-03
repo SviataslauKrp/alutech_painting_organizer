@@ -1,5 +1,6 @@
 package org.painting.alutechorganizer.service.impl;
 
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.painting.alutechorganizer.domain.WorkerEntity;

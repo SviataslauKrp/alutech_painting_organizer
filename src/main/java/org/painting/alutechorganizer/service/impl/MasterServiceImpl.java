@@ -27,6 +27,7 @@ public class MasterServiceImpl implements MasterService {
     private final WorkerRepository workerRepository;
     private final MasterMapper masterMapper;
 
+
     @Override
     public void saveMaster(MasterDto master) {
 
@@ -88,7 +89,7 @@ public class MasterServiceImpl implements MasterService {
         WorkerEntity workerEntity = workerRepository.findById(workerId).orElseThrow(WorkerNotFoundException::new);
 
         if (masterEntity.getWorkers().contains(workerEntity)) {
-            workerEntity.getAwayFromMaster();
+            masterEntity.removeWorker(workerEntity);
         }
 
     }
