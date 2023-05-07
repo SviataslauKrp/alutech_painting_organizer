@@ -65,7 +65,7 @@ public class MasterServiceImpl implements MasterService {
     public List<MasterDto> getAllMasters() {
 
         List<MasterEntity> allMasterEntities = masterRepository.findAll();
-        if (allMasterEntities.size() < 1) {
+        if (allMasterEntities.isEmpty()) {
             throw new EmptyMastersListException();
         }
 

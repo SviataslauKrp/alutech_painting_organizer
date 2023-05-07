@@ -39,7 +39,7 @@ public class WorkplaceServiceImpl implements WorkplaceService {
     public List<WorkplaceDto> getAllWorkplaces() {
 
         List<WorkplaceEntity> allWorkplaceEntities = workplaceRepository.findAll();
-        if (allWorkplaceEntities.size() < 1) {
+        if (allWorkplaceEntities.isEmpty()) {
             throw new EmptyWorkplacesListException();
         }
         return workplaceMapper.toListDtos(allWorkplaceEntities);
