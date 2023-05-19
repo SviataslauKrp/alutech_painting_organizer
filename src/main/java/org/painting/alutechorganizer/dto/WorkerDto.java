@@ -26,6 +26,7 @@ public class WorkerDto {
 
     @NotBlank
     private String profession;
+    @NotNull
     private MasterDto master;
 
 }

@@ -5,6 +5,7 @@ import org.painting.alutechorganizer.dto.MasterDto;
 import org.painting.alutechorganizer.service.MasterService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -37,10 +38,12 @@ public class MasterController {
         masterService.updateMasterById(master, id);
     }
 
-    @GetMapping("/get_all_masters")
-    public void getAllMasters() {
+    @GetMapping("/choose_master")
+    public ModelAndView getAllMasters() {
+
         List<MasterDto> masters = masterService.getAllMasters();
-        System.out.println();
+        return new ModelAndView("main_page", "allMasters", masters);
+
     }
 
     @PostMapping("/add_worker_to_master")

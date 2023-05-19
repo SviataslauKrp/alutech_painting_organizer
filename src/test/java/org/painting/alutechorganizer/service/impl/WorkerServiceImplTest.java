@@ -6,11 +6,9 @@ import org.mockito.*;
 import org.painting.alutechorganizer.domain.Profession;
 import org.painting.alutechorganizer.domain.WorkerEntity;
 import org.painting.alutechorganizer.dto.WorkerDto;
-import org.painting.alutechorganizer.exc.EmptyBrigadeException;
 import org.painting.alutechorganizer.exc.WorkerNotFoundException;
 import org.painting.alutechorganizer.mapper.WorkerMapper;
 import org.painting.alutechorganizer.repository.WorkerRepository;
-import org.painting.alutechorganizer.service.WorkerService;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -90,9 +88,11 @@ class WorkerServiceImplTest {
         when(repository.findAll()).thenReturn(List.of());
         when(mapper.toListDtos(any())).thenReturn(List.of());
 
-        //when and then
-        assertThrows(EmptyBrigadeException.class, () -> service.getAllWorkers());
+        //when
+        List<WorkerDto> allWorkers = service.getAllWorkers();
 
+        //then
+        assertEquals(0, allWorkers.size());
     }
 
     @Test

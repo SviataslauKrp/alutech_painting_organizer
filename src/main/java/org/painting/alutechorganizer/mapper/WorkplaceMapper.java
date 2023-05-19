@@ -1,6 +1,7 @@
 package org.painting.alutechorganizer.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.painting.alutechorganizer.domain.WorkerEntity;

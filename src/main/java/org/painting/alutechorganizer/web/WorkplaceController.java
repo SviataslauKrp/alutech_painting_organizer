@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Map;
 
 
 @RequiredArgsConstructor
@@ -19,20 +19,36 @@ public class WorkplaceController {
 
     private final WorkplaceService service;
 
+    @GetMapping("/create_workplace")
+    public ModelAndView getCreateFormForWorkplace() {
+
+        return new ModelAndView("create_workplace_page", "workplace", new WorkplaceDto());
+
+    }
+
     @PostMapping("/create_workplace")
-    public void createWorkplace(@Valid WorkplaceDto workplace) {
+    public String createWorkplace(@Valid WorkplaceDto workplace) {
+
         service.saveWorkplace(workplace);
+        return "redirect:/workplaces/get_all_workplaces";
+
     }
 
     @GetMapping("/get_all_workplaces")
-    public ModelAndView getAllWorkplaces() {
+    public ModelAndView getAllWorkplaces(@RequestParam(name = "masterId") Integer masterId) {
         List<WorkplaceDto> allWorkplaces = service.getAllWorkplaces();
-        return new ModelAndView("all_Workplaces", "allWorkplaces", allWorkplaces);
+        ModelAndView modelAndView = new ModelAndView("workplaces_list");
+        modelAndView.addAllObjects(Map.of("allWorkplaces", allWorkplaces,
+                                          "masterId", masterId));
+        return modelAndView;
     }
+
 
     @GetMapping(value = "/workplace_page")
     public void getWorkplace(@RequestParam Integer id) {
+
         WorkplaceDto workplaceById = service.getWorkplaceById(id);
+
     }
 
     @DeleteMapping("/workplace_page")
@@ -46,17 +62,23 @@ public class WorkplaceController {
     }
 
     @PostMapping("/add_worker_to_workplace")
-    public void addWorkerToWorkplace(@RequestParam Integer workerId, @RequestParam Integer workplaceId) {
+    public String addWorkerToWorkplace(@RequestParam(name = "workerId") Integer workerId,
+                                       @RequestParam(name = "workplaceId") Integer workplaceId,
+                                       @RequestParam(name = "masterId") Integer masterId) {
 
         service.addWorkerToWorkplace(workerId, workplaceId);
+        //не похоже на решение на коленке?
+        return String.format("redirect:/workplaces/get_all_workplaces?masterId=%d", masterId);
 
     }
 
-    @DeleteMapping("/remove_worker_to_workplace")
-    public void removeWorkerFromWorkplace(@RequestParam Integer workerId, @RequestParam Integer workplaceId) {
+    @PostMapping("/remove_worker_from_workplace")
+    public String removeWorkerFromWorkplace(@RequestParam(name = "workerId") Integer workerId,
+                                            @RequestParam(name = "workplaceId") Integer workplaceId,
+                                            @RequestParam(name = "masterId") Integer masterId) {
 
         service.removeWorkerFromWorkplace(workerId, workplaceId);
-
+        return String.format("redirect:/workplaces/get_all_workplaces?masterId=%d", masterId);
     }
 
 }

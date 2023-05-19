@@ -34,6 +34,7 @@ public class WorkerEntity {
     private Profession profession;
 
     @ManyToOne
+    @NotNull
     private MasterEntity master;
 
     public boolean isAvailable() {

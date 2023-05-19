@@ -29,6 +29,9 @@ public class WorkplaceEntity {
                fetch = FetchType.EAGER)
     private List<WorkerEntity> workers;
 
+    @ManyToMany
+    private List<MasterEntity> masters;
+
     public void addWorker(WorkerEntity worker) {
 
         workers.add(worker);
