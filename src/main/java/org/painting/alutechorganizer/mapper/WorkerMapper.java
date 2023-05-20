@@ -8,6 +8,8 @@ import org.painting.alutechorganizer.domain.WorkplaceEntity;
 import org.painting.alutechorganizer.dto.MasterDto;
 import org.painting.alutechorganizer.dto.WorkerDto;
 import org.painting.alutechorganizer.dto.WorkplaceDto;
+import org.painting.alutechorganizer.exc.MasterException;
+import org.painting.alutechorganizer.exc.WorkplaceException;
 
 import java.util.List;
 
@@ -52,6 +54,7 @@ public interface WorkerMapper {
         return WorkplaceDto.builder()
                 .id(workplaceEntity.getId())
                 .name(workplaceEntity.getName())
+                .master(toMasterDto(workplaceEntity.getMaster()))
                 .build();
     }
 

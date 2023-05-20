@@ -23,7 +23,7 @@ public class WorkerController {
     private final MasterService masterService;
 
     @PostMapping("/create_worker")
-    public String saveWorker(@Valid @ModelAttribute(name = "worker") WorkerDto worker) {
+    public String saveWorker(@Valid WorkerDto worker) {
         workerService.saveWorker(worker);
         return "redirect:/workers/all_workers";
     }
@@ -35,6 +35,7 @@ public class WorkerController {
         List<MasterDto> allMasters = masterService.getAllMasters();
         modelAndView.addAllObjects(Map.of("worker", new WorkerDto(),
                 "allMasters", allMasters));
+        //нужно ли создавать рабочего, а потом спец методом связывать его с мастером?
         return modelAndView;
     }
 
@@ -68,11 +69,11 @@ public class WorkerController {
     }
 
     @GetMapping("/update_worker")
-    public ModelAndView getUpdate(@RequestParam(name = "workerId") Integer id) {
+    public ModelAndView getUpdatePage(@RequestParam(name = "workerId") Integer id) {
         WorkerDto worker = workerService.getWorkerById(id);
         Integer masterId = worker.getMaster().getId();
         List<MasterDto> allMasters = masterService.getAllMasters();
-        ModelAndView modelAndView = new ModelAndView("update_page");
+        ModelAndView modelAndView = new ModelAndView("update_worker_page");
         modelAndView.addAllObjects(Map.of("worker", worker,
                 "allMasters", allMasters,
                 "masterId", masterId));
@@ -95,7 +96,7 @@ public class WorkerController {
         return new ModelAndView("brigade_list", "workers", workers);
 
     }
-
+//через необязательные параметры
     @GetMapping(value = "/get_workers_by_master_id", params = {"masterId", "workplaceId"})
     public ModelAndView getWorkersByMasterIdWithAdd(@RequestParam(name = "masterId") Integer masterId) {
         //как работать со скрытыми параметрами??

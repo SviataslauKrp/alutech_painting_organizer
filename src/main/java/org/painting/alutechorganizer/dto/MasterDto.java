@@ -19,4 +19,6 @@ public class MasterDto {
     private String surname;
     private List<WorkerDto> workers;
 
+    private List<WorkplaceDto> workplaces;
+
 }

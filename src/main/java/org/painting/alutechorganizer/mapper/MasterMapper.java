@@ -10,7 +10,7 @@ import org.painting.alutechorganizer.dto.MasterDto;
 import java.util.List;
 
 @Mapper(componentModel = "spring",
-        uses = WorkerMapper.class,
+        uses = {WorkerMapper.class, WorkplaceMapper.class},
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface MasterMapper {
 

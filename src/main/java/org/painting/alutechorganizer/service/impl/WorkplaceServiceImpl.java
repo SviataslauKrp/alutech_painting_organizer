@@ -1,16 +1,17 @@
 package org.painting.alutechorganizer.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.painting.alutechorganizer.domain.MasterEntity;
 import org.painting.alutechorganizer.domain.WorkerEntity;
 import org.painting.alutechorganizer.domain.WorkplaceEntity;
+import org.painting.alutechorganizer.dto.MasterDto;
 import org.painting.alutechorganizer.dto.WorkplaceDto;
-import org.painting.alutechorganizer.exc.EmptyWorkplacesListException;
-import org.painting.alutechorganizer.exc.WorkerIsNotAvailableException;
-import org.painting.alutechorganizer.exc.WorkerNotFoundException;
-import org.painting.alutechorganizer.exc.WorkplaceException;
+import org.painting.alutechorganizer.exc.*;
 import org.painting.alutechorganizer.mapper.WorkplaceMapper;
+import org.painting.alutechorganizer.repository.MasterRepository;
 import org.painting.alutechorganizer.repository.WorkerRepository;
 import org.painting.alutechorganizer.repository.WorkplaceRepository;
+import org.painting.alutechorganizer.service.MasterService;
 import org.painting.alutechorganizer.service.WorkplaceService;
 import org.springframework.stereotype.Service;
 
@@ -26,11 +27,14 @@ public class WorkplaceServiceImpl implements WorkplaceService {
     private final WorkplaceMapper workplaceMapper;
     private final WorkplaceRepository workplaceRepository;
     private final WorkerRepository workerRepository;
+    private final MasterRepository masterRepository;
 
     @Override
-    public void saveWorkplace(WorkplaceDto workplace) {
+    public void saveWorkplace(WorkplaceDto workplace, Integer masterId) {
 
+        MasterEntity master = masterRepository.findById(masterId).orElseThrow(MasterException::new);
         WorkplaceEntity workplaceEntity = workplaceMapper.toWorkplaceEntity(workplace);
+        master.addWorkplace(workplaceEntity);
         workplaceRepository.save(workplaceEntity);
 
     }
@@ -96,6 +100,13 @@ public class WorkplaceServiceImpl implements WorkplaceService {
         } else {
             throw new WorkerNotFoundException();
         }
+
+    }
+
+    @Override
+    public List<WorkplaceDto> getWorkplacesByMasterId(Integer masterId) {
+
+        return workplaceMapper.toListDtos(workplaceRepository.findByMasterId(masterId));
 
     }
 

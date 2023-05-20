@@ -18,4 +18,7 @@ public class WorkplaceDto {
 
     private List<WorkerDto> workers;
 
+    @NonNull
+    private MasterDto master;
+
 }

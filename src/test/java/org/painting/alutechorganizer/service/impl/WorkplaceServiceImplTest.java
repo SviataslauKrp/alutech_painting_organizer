@@ -72,7 +72,7 @@ class WorkplaceServiceImplTest {
         when(workplaceMapper.toWorkplaceEntity(testWorkplaceDto)).thenReturn(testWorkplaceEntity);
 
         //when
-        service.saveWorkplace(testWorkplaceDto);
+        service.saveWorkplace(testWorkplaceDto, masterId);
 
         //then
         verify(workplaceRepository, times(1)).save(testWorkplaceEntity);

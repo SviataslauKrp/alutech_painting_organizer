@@ -40,16 +40,17 @@
             </select>
         </div>
 
-        <form action="#" th:action="@{/workers/update_worker}" method="post">
-            <input type="hidden" th:value="${worker.id}" name="workerId">
-            <input type="hidden" th:value="${masterId}" name="masterId">
-            <button type="submit" class="btn btn-warning">Update worker</button>
-        </form>
+
+        <input type="hidden" th:value="${worker.id}" name="workerId">
+        <input type="hidden" th:value="${masterId}" name="masterId">
+        <button type="submit" class="btn btn-warning">Update worker</button>
+
 
     </form>
 
     <div class="d-grid col-6 mx-auto">
-        <a th:href="@{/workers/get_workers_by_master_id(masterId=${masterId})}" class="btn btn-primary" type="button">Brigade list</a>
+        <a th:href="@{/workers/get_workers_by_master_id(masterId=${masterId})}" class="btn btn-primary" type="button">Brigade
+            list</a>
     </div>
 
 </div>

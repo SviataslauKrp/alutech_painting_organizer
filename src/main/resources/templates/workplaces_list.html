@@ -55,7 +55,17 @@
                     <input type="hidden" name="workplaceId" th:value="${workplace.id}"/>
                     <button type="submit" class="btn btn-primary">Add Worker</button>
                 </form>
+                <form method="get" th:action="@{/workplaces/update_workplace}" >
+                    <input type="hidden" name="masterId" th:value="${param.masterId}">
+                    <input type="hidden" name="workplaceId" th:value="${workplace.id}"/>
+                    <button type="submit" class="btn btn-primary mt-2">Rename workplace</button>
+                </form>
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 d-flex justify-content-center mt-6">
+            <a th:href="@{/workplaces/create_workplace(masterId=${masterId})}" class="btn btn-primary col-6">Create workplace</a>
         </div>
     </div>
 </div>

@@ -3,17 +3,18 @@ package org.painting.alutechorganizer.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.painting.alutechorganizer.domain.MasterEntity;
 import org.painting.alutechorganizer.domain.WorkerEntity;
+import org.painting.alutechorganizer.domain.WorkplaceEntity;
 import org.painting.alutechorganizer.dto.MasterDto;
-import org.painting.alutechorganizer.exc.EmptyMastersListException;
 import org.painting.alutechorganizer.exc.MasterException;
 import org.painting.alutechorganizer.exc.WorkerNotFoundException;
 import org.painting.alutechorganizer.mapper.MasterMapper;
 import org.painting.alutechorganizer.repository.MasterRepository;
 import org.painting.alutechorganizer.repository.WorkerRepository;
+import org.painting.alutechorganizer.repository.WorkplaceRepository;
 import org.painting.alutechorganizer.service.MasterService;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ModelAttribute;
 
+import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import java.util.List;
 

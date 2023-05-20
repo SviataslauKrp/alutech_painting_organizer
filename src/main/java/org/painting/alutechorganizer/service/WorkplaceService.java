@@ -1,13 +1,12 @@
 package org.painting.alutechorganizer.service;
 
-import org.painting.alutechorganizer.dto.WorkerDto;
 import org.painting.alutechorganizer.dto.WorkplaceDto;
 
 import java.util.List;
 
 public interface WorkplaceService {
 
-    void saveWorkplace(WorkplaceDto workplace);
+    void saveWorkplace(WorkplaceDto workplace, Integer masterId);
 
     List<WorkplaceDto> getAllWorkplaces();
 
@@ -20,4 +19,6 @@ public interface WorkplaceService {
     void addWorkerToWorkplace(Integer workerId, Integer workplaceId);
 
     void removeWorkerFromWorkplace(Integer workerId, Integer workplaceId);
+
+    List<WorkplaceDto> getWorkplacesByMasterId(Integer masterId);
 }

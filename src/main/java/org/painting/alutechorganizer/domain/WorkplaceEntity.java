@@ -1,17 +1,16 @@
 package org.painting.alutechorganizer.domain;
 
 import lombok.*;
-import org.hibernate.jdbc.Work;
-import org.painting.alutechorganizer.exc.WorkerNotFoundException;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.ArrayList;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 @Builder
 
 @Entity
@@ -26,11 +25,12 @@ public class WorkplaceEntity {
     private String name;
 
     @OneToMany(mappedBy = "workplace",
-               fetch = FetchType.EAGER)
+            fetch = FetchType.EAGER)
     private List<WorkerEntity> workers;
 
-    @ManyToMany
-    private List<MasterEntity> masters;
+    @ManyToOne
+    @NotNull
+    private MasterEntity master;
 
     public void addWorker(WorkerEntity worker) {
 
