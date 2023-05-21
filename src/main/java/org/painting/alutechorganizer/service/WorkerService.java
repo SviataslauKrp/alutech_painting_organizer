@@ -18,6 +18,7 @@ public interface WorkerService {
     void updateWorker(WorkerDto worker, Integer id);
 
     List<WorkerDto> getWorkersByMasterId(Integer masterId);
+    List<WorkerDto> getWorkersByMasterIdAndWorkplaceId(Integer masterId, Integer workplaceId);
 
     void setNewMasterToWorker(Integer workerId, Integer masterId);
 }

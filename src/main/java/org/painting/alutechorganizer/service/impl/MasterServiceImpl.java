@@ -27,6 +27,7 @@ public class MasterServiceImpl implements MasterService {
     private final MasterRepository masterRepository;
     private final WorkerRepository workerRepository;
     private final MasterMapper masterMapper;
+    private final WorkplaceRepository workplaceRepository;
 
 
     @Override

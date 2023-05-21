@@ -69,6 +69,13 @@ public class WorkerServiceImpl implements WorkerService {
     }
 
     @Override
+    public List<WorkerDto> getWorkersByMasterIdAndWorkplaceId(Integer masterId, Integer workplaceId) {
+
+        return mapper.toListDtos(workerRepository.findByMasterIdAndWorkplaceId(masterId, workplaceId));
+
+    }
+
+    @Override
     public void setNewMasterToWorker(Integer workerId, Integer masterId) {
         //или лучше сделать через линию мастеров?
         MasterEntity newMaster = masterRepository.findById(masterId).orElseThrow(MasterException::new);

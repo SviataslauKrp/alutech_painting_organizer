@@ -8,5 +8,6 @@ import java.util.List;
 public interface WorkerRepository extends JpaRepository<WorkerEntity, Integer> {
 
     List<WorkerEntity> findByMasterId(Integer id);
+    List<WorkerEntity> findByMasterIdAndWorkplaceId(Integer masterId, Integer workplaceId);
 
 }

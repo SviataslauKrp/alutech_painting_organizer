@@ -28,10 +28,8 @@
                 <option th:each="profession : ${T(org.painting.alutechorganizer.domain.Profession).values()}"
                         th:value="${profession}" th:text="${profession}"></option>
             </select>
-<!--            <span class="help-block" th:if="${#fields.hasErrors('profession')}"-->
-<!--                  th:errors="*{profession}"></span>-->
+
         </div>
-<!--        <p th:if="${#fields.hasErrors('profession')}" class="text-danger">Please choose a profession</p>-->
 
         <div class="form-group">
             <select class="form-control" th:field="*{master.id}" id="master" required>

@@ -26,7 +26,7 @@
             <input th:field="*{name}" type="text" class="form-control" id="name" required pattern=".*\S+.*">
         </div>
 
-        <input type="hidden" th:value="${masterId}" name="masterId">
+        <input type="hidden" th:value="${param.masterId}" name="masterId">
         <button type="submit" class="btn btn-primary">Create</button>
     </form>
 </div>

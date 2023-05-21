@@ -30,26 +30,26 @@ public class WorkerController {
 
 
     @GetMapping("/create_worker")
-    public ModelAndView getCreateForm() {
-        ModelAndView modelAndView = new ModelAndView("create_worker");
+    public ModelAndView getCreateForm(@ModelAttribute("worker") WorkerDto worker) {
         List<MasterDto> allMasters = masterService.getAllMasters();
-        modelAndView.addAllObjects(Map.of("worker", new WorkerDto(),
-                "allMasters", allMasters));
-        //нужно ли создавать рабочего, а потом спец методом связывать его с мастером?
+        return new ModelAndView("create_worker", "allMasters", allMasters);
+    }
+
+
+    @GetMapping("/get_workers_by_master_id")
+    public ModelAndView getWorkersByMasterIdWithAdd(@RequestParam(name = "masterId") Integer masterId,
+                                                    @RequestParam(name = "workplaceId", required = false) Integer workplaceId) {
+
+        if (workplaceId == null) {
+            List<WorkerDto> workers = workerService.getWorkersByMasterId(masterId);
+            return new ModelAndView("brigade_list", "workers", workers);
+        }
+
+        List<WorkerDto> workers = workerService.getWorkersByMasterId(masterId);
+        ModelAndView modelAndView = new ModelAndView("workers_list_with_add");
+        modelAndView.addAllObjects(Map.of("workers", workers,
+                "masterId", masterId));
         return modelAndView;
-    }
-
-    @GetMapping(value = "/personal_page")
-    public ModelAndView getWorkerById(@RequestParam Integer id) {
-
-        WorkerDto worker = workerService.getWorkerById(id);
-        return new ModelAndView("personal_page", "worker", worker);
-
-    }
-
-    @DeleteMapping("/personal_page")
-    public void deleteWorkerById(@RequestParam Integer id) {
-        workerService.deleteWorkerById(id);
     }
 
     @GetMapping("/all_workers")
@@ -60,13 +60,20 @@ public class WorkerController {
 
     }
 
-    @PostMapping(value = "/all_workers", params = "workplaceId")
-    public ModelAndView getAllWorkersWithAdd() {
+//    @GetMapping(value = "/personal_page")
+//    public ModelAndView getWorkerById(@RequestParam Integer id) {
+//
+//        WorkerDto worker = workerService.getWorkerById(id);
+//        return new ModelAndView("personal_page", "worker", worker);
+//
+//    }
 
-        List<WorkerDto> workers = workerService.getAllWorkers();
-        return new ModelAndView("workers_list_with_add", "workers", workers);
+//    @DeleteMapping("/personal_page")
+//    public void deleteWorkerById(@RequestParam Integer id) {
+//        workerService.deleteWorkerById(id);
+//    }
 
-    }
+
 
     @GetMapping("/update_worker")
     public ModelAndView getUpdatePage(@RequestParam(name = "workerId") Integer id) {
@@ -85,26 +92,7 @@ public class WorkerController {
                                    @RequestParam(name = "workerId") Integer workerId,
                                    @RequestParam(name = "masterId") Integer masterId) {
         workerService.updateWorker(worker, workerId);
-        //чувствую, что решение "на коленке"
         return String.format("redirect:/workers/get_workers_by_master_id?masterId=%d", masterId);
-    }
-
-    @GetMapping(value = "/get_workers_by_master_id", params = "masterId")
-    public ModelAndView getWorkersByMasterId(@RequestParam(name = "masterId") Integer masterId) {
-
-        List<WorkerDto> workers = workerService.getWorkersByMasterId(masterId);
-        return new ModelAndView("brigade_list", "workers", workers);
-
-    }
-//через необязательные параметры
-    @GetMapping(value = "/get_workers_by_master_id", params = {"masterId", "workplaceId"})
-    public ModelAndView getWorkersByMasterIdWithAdd(@RequestParam(name = "masterId") Integer masterId) {
-        //как работать со скрытыми параметрами??
-        List<WorkerDto> workers = workerService.getWorkersByMasterId(masterId);
-        ModelAndView modelAndView = new ModelAndView("workers_list_with_add");
-        modelAndView.addAllObjects(Map.of("workers", workers,
-                                          "masterId", masterId));
-        return modelAndView;
     }
 
     @GetMapping("/transfer_worker_to_another_master")

@@ -35,7 +35,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="worker : ${workplace.workers}" th:if="${worker.master.id == masterId}">
+                <tr th:each="worker : ${workplace.workers}">
                     <td th:text="${worker.surname}"></td>
                     <td th:text="${worker.master.surname}"></td>
                     <td th:text="${worker.profession}"></td>
@@ -60,12 +60,17 @@
                     <input type="hidden" name="workplaceId" th:value="${workplace.id}"/>
                     <button type="submit" class="btn btn-primary mt-2">Rename workplace</button>
                 </form>
+                <form method="post" th:action="@{/workplaces/delete_workplace}" >
+                    <input type="hidden" name="masterId" th:value="${param.masterId}">
+                    <input type="hidden" name="workplaceId" th:value="${workplace.id}"/>
+                    <button type="submit" class="btn btn-primary mt-2">Delete workplace</button>
+                </form>
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col-12 d-flex justify-content-center mt-6">
-            <a th:href="@{/workplaces/create_workplace(masterId=${masterId})}" class="btn btn-primary col-6">Create workplace</a>
+            <a th:href="@{/workplaces/create_workplace(masterId=${param.masterId})}" class="btn btn-primary col-6">Create workplace</a>
         </div>
     </div>
 </div>

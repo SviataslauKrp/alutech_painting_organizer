@@ -3,8 +3,10 @@ package org.painting.alutechorganizer.web;
 import lombok.RequiredArgsConstructor;
 import org.painting.alutechorganizer.domain.WorkplaceEntity;
 import org.painting.alutechorganizer.dto.MasterDto;
+import org.painting.alutechorganizer.dto.WorkerDto;
 import org.painting.alutechorganizer.dto.WorkplaceDto;
 import org.painting.alutechorganizer.service.MasterService;
+import org.painting.alutechorganizer.service.WorkerService;
 import org.painting.alutechorganizer.service.WorkplaceService;
 import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
@@ -13,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -23,12 +26,13 @@ import java.util.Map;
 public class WorkplaceController {
 
     private final WorkplaceService workplaceService;
+    private final WorkerService workerService;
 
     @GetMapping("/create_workplace")
     public ModelAndView getCreateFormForWorkplace(@ModelAttribute(name = "workplace") WorkplaceDto workplace,
                                                   @RequestParam(name = "masterId") Integer masterId) {
 
-        return new ModelAndView("create_workplace_page", "masterId", masterId);
+        return new ModelAndView("create_workplace_page");
 
     }
 
@@ -44,10 +48,7 @@ public class WorkplaceController {
     @GetMapping("/get_all_workplaces")
     public ModelAndView getWorkplacesByMasterId(@RequestParam(name = "masterId") Integer masterId) {
         List<WorkplaceDto> workplaces = workplaceService.getWorkplacesByMasterId(masterId);
-        ModelAndView modelAndView = new ModelAndView("workplaces_list");
-        modelAndView.addAllObjects(Map.of("allWorkplaces", workplaces,
-                "masterId", masterId));
-        return modelAndView;
+        return new ModelAndView("workplaces_list", "allWorkplaces", workplaces);
     }
 
 
@@ -58,9 +59,11 @@ public class WorkplaceController {
 
     }
 
-    @DeleteMapping("/workplace_page")
-    public void deleteWorkplaceById(@RequestParam Integer id) {
-        workplaceService.deleteWorkplaceById(id);
+    @PostMapping("/delete_workplace")
+    public String deleteWorkplaceById(@RequestParam(name = "workplaceId") Integer workplaceId,
+                                      @RequestParam(name = "masterId") Integer masterId) {
+        workplaceService.deleteWorkplaceById(workplaceId);
+        return String.format("redirect:/workplaces/get_all_workplaces?masterId=%d", masterId);
     }
 
     @GetMapping("/update_workplace")
