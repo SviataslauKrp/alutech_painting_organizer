@@ -50,22 +50,23 @@
                 </tbody>
             </table>
             <div class="text-center mt-4">
-                <form method="get" th:action="@{/workers/get_workers_by_master_id}">
+                <form method="get" th:action="@{/workers/get_workers_by_master_id}" style="display: inline;">
                     <input type="hidden" name="masterId" th:value="${param.masterId}"/>
                     <input type="hidden" name="workplaceId" th:value="${workplace.id}"/>
                     <button type="submit" class="btn btn-primary">Add Worker</button>
                 </form>
-                <form method="get" th:action="@{/workplaces/update_workplace}" >
+                <form method="get" th:action="@{/workplaces/update_workplace}" style="display: inline;">
                     <input type="hidden" name="masterId" th:value="${param.masterId}">
                     <input type="hidden" name="workplaceId" th:value="${workplace.id}"/>
-                    <button type="submit" class="btn btn-primary mt-2">Rename workplace</button>
+                    <button type="submit" class="btn btn-warning ml-2">Rename workplace</button>
                 </form>
-                <form method="post" th:action="@{/workplaces/delete_workplace}" >
+                <form method="post" th:action="@{/workplaces/delete_workplace}" style="display: inline;">
                     <input type="hidden" name="masterId" th:value="${param.masterId}">
                     <input type="hidden" name="workplaceId" th:value="${workplace.id}"/>
-                    <button type="submit" class="btn btn-primary mt-2">Delete workplace</button>
+                    <button type="submit" class="btn btn-danger ml-2">Delete workplace</button>
                 </form>
             </div>
+
         </div>
     </div>
     <div class="row">

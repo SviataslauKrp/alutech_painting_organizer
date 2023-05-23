@@ -32,7 +32,13 @@
             <td th:text="${worker.workplace != null? worker.workplace.name : ''}"></td>
             <td th:text="${worker.master.surname}"></td>
             <td>
-                <a class="btn btn-primary" th:href="@{/workers/update_worker(workerId=${worker.id})}">Update</a>
+                <div>
+                    <form method="get" th:action="@{/workers/update_worker}">
+                        <input type="hidden" name="masterId" th:value="${param.masterId}">
+                        <input type="hidden" name="workerId" th:value="${worker.id}">
+                        <button type="submit" class="btn btn-warning ml-2">Update</button>
+                    </form>
+                </div>
             </td>
         </tr>
         </tbody>

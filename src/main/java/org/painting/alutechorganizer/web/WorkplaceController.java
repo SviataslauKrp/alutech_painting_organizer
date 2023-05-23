@@ -26,7 +26,6 @@ import java.util.Map;
 public class WorkplaceController {
 
     private final WorkplaceService workplaceService;
-    private final WorkerService workerService;
 
     @GetMapping("/create_workplace")
     public ModelAndView getCreateFormForWorkplace(@ModelAttribute(name = "workplace") WorkplaceDto workplace,
@@ -67,14 +66,11 @@ public class WorkplaceController {
     }
 
     @GetMapping("/update_workplace")
-    public ModelAndView getUpdatePage(@RequestParam(name = "workplaceId") Integer workplaceId) {
+    public ModelAndView getUpdatePage(@RequestParam(name = "workplaceId") Integer workplaceId,
+                                      @RequestParam(name = "masterId") Integer masterId) {
 
         WorkplaceDto workplace = workplaceService.getWorkplaceById(workplaceId);
-        Integer masterId = workplace.getMaster().getId();
-        ModelAndView modelAndView = new ModelAndView("update_workplace_page");
-        modelAndView.addAllObjects(Map.of("workplace", workplace,
-                "masterId", masterId));
-        return modelAndView;
+        return new ModelAndView("update_workplace_page", "workplace", workplace);
 
     }
 
