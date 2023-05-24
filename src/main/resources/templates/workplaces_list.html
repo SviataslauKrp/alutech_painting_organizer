@@ -73,7 +73,11 @@
         <div class="col-12 d-flex justify-content-center mt-6">
             <a th:href="@{/workplaces/create_workplace(masterId=${param.masterId})}" class="btn btn-primary col-6">Create workplace</a>
         </div>
+        <div class="col-12 d-flex justify-content-center mt-3">
+            <a th:href="@{/workers/get_workers_by_master_id(masterId=${param.masterId})}" class="btn btn-primary col-6">View brigade</a>
+        </div>
     </div>
+
 </div>
 </body>
 </html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create master</title>
+</head>
+<body>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+  <meta charset="UTF-8">
+  <title>Create Worker Form</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+  <h1>Create Master Form</h1>
+  <form action="#" th:action="@{/masters/create_master}" th:object="${master}" method="post">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input type="text" class="form-control" th:field="*{name}" id="name" required pattern=".*\S+.*">
+    </div>
+    <div class="form-group">
+      <label for="surname">Surname</label>
+      <input type="text" class="form-control" th:field="*{surname}" id="surname" required pattern=".*\S+.*">
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-block" style="margin-top: 250px;">Create</button>
+
+  </form>
+</div>
+<script th:src="@{https://code.jquery.com/jquery-3.3.1.slim.min.js}"></script>
+<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js}"></script>
+<script th:src="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+</body>
+</html>
+
+</body>
+</html>

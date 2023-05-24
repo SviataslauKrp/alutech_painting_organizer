@@ -30,7 +30,7 @@ public class WorkerController {
 
 
     @GetMapping("/create_worker")
-    public ModelAndView getCreateForm(@ModelAttribute("worker") WorkerDto worker) {
+    public ModelAndView getCreatingForm(@ModelAttribute("worker") WorkerDto worker) {
         List<MasterDto> allMasters = masterService.getAllMasters();
         return new ModelAndView("create_worker", "allMasters", allMasters);
     }
@@ -39,17 +39,13 @@ public class WorkerController {
     @GetMapping("/get_workers_by_master_id")
     public ModelAndView getWorkersByMasterId(@RequestParam(name = "masterId") Integer masterId,
                                              @RequestParam(name = "workplaceId", required = false) Integer workplaceId) {
+        List<WorkerDto> workers = workerService.getWorkersByMasterId(masterId);
 
         if (workplaceId == null) {
-            List<WorkerDto> workers = workerService.getWorkersByMasterId(masterId);
             return new ModelAndView("brigade_list", "workers", workers);
         }
 
-        List<WorkerDto> workers = workerService.getWorkersByMasterId(masterId);
-        ModelAndView modelAndView = new ModelAndView("workers_list_with_add");
-        modelAndView.addAllObjects(Map.of("workers", workers,
-                "masterId", masterId));
-        return modelAndView;
+        return new ModelAndView("workers_list_with_add", "workers", workers);
     }
 
     @GetMapping("/all_workers")
@@ -60,17 +56,19 @@ public class WorkerController {
 
     }
 
-    @GetMapping(value = "/personal_page")
-    public ModelAndView getWorkerById(@RequestParam Integer id) {
+    @GetMapping(value = "/find_worker")
+    public ModelAndView getWorkerBySurname(@RequestParam(name = "foundWorkerSurname") String foundWorkerSurname,
+                                           @RequestParam(name = "masterId") Integer masterId) {
 
-        WorkerDto worker = workerService.getWorkerById(id);
-        return new ModelAndView("personal_page", "worker", worker);
-
+        WorkerDto worker = workerService.getWorkerBySurname(foundWorkerSurname);
+        return new ModelAndView("brigade_list", "workers", worker);
     }
 
-    @DeleteMapping("/personal_page")
-    public void deleteWorkerById(@RequestParam Integer id) {
-        workerService.deleteWorkerById(id);
+    @PostMapping("/delete_worker")
+    public String deleteWorkerById(@RequestParam(name = "workerId") Integer workerId,
+                                   @RequestParam(name = "masterId") Integer masterId) {
+        workerService.deleteWorkerById(workerId);
+        return String.format("redirect:/workers/get_workers_by_master_id?masterId=%d", masterId);
     }
 
 
@@ -89,6 +87,7 @@ public class WorkerController {
     public String updateWorkerById(WorkerDto worker,
                                    @RequestParam(name = "workerId") Integer workerId,
                                    @RequestParam(name = "masterId") Integer masterId) {
+
         workerService.updateWorker(worker, workerId);
         return String.format("redirect:/workers/get_workers_by_master_id?masterId=%d", masterId);
     }
@@ -107,14 +106,6 @@ public class WorkerController {
         Integer oldMasterId = workerById.getMaster().getId();
         workerService.setNewMasterToWorker(workerId, masterId);
         return String.format("redirect:/workers/get_workers_by_master_id?masterId=%d", oldMasterId);
-
-    }
-
-    @GetMapping("/list_masters_for_transfer")
-    public ModelAndView getListMastersForTransfer(@RequestParam(name = "workerId") Integer workerId) {
-
-        List<MasterDto> allMasters = masterService.getAllMasters();
-        return new ModelAndView("masters_list_for_transfer", "allMasters", allMasters);
 
     }
 

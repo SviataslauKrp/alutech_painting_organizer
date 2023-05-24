@@ -11,14 +11,15 @@ public interface WorkerService {
 
     List<WorkerDto> getAllWorkers();
 
-    WorkerDto getWorkerById(Integer id) throws WorkerNotFoundException;
+    WorkerDto getWorkerBySurname(String surname) throws WorkerNotFoundException;
 
     void deleteWorkerById(Integer id);
 
     void updateWorker(WorkerDto worker, Integer id);
 
     List<WorkerDto> getWorkersByMasterId(Integer masterId);
-    List<WorkerDto> getWorkersByMasterIdAndWorkplaceId(Integer masterId, Integer workplaceId);
 
     void setNewMasterToWorker(Integer workerId, Integer masterId);
+
+    WorkerDto getWorkerById(Integer workerId);
 }

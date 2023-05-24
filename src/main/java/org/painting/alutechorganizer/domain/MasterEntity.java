@@ -38,6 +38,7 @@ public class MasterEntity {
 
         workers.add(worker);
         worker.setMaster(this);
+        worker.setWorkplace(null);
 
     }
 

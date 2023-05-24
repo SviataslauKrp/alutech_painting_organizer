@@ -1,17 +1,18 @@
 package org.painting.alutechorganizer.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.*;
 import org.painting.alutechorganizer.domain.MasterEntity;
+import org.painting.alutechorganizer.domain.WorkerEntity;
 import org.painting.alutechorganizer.dto.MasterDto;
+import org.painting.alutechorganizer.dto.WorkerDto;
 
 import java.util.List;
 
 @Mapper(componentModel = "spring",
         uses = {WorkerMapper.class, WorkplaceMapper.class},
-        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS
+)
 public interface MasterMapper {
 
     @Mapping(target = "workers", ignore = true)

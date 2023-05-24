@@ -9,7 +9,8 @@ import java.time.LocalDate;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 @Builder
 
 @Entity
@@ -37,13 +38,17 @@ public class WorkerEntity {
     @NotNull
     private MasterEntity master;
 
-    public boolean isAvailable() {
-        return workplace == null;
-    }
+    private String note;
+
+    @Column(name = "is_available",
+            columnDefinition = "boolean default true")
+    private Boolean isAvailable = true;
+
 
     public void leaveWorkplace() {
         workplace = null;
     }
+
     public void getAwayFromMaster() {
         master = null;
     }

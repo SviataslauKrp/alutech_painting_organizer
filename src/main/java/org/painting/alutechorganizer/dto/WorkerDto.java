@@ -29,4 +29,7 @@ public class WorkerDto {
     @NotNull
     private MasterDto master;
 
+    private String note;
+    private Boolean isAvailable;
+
 }

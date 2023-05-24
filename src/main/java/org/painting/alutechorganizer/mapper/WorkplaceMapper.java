@@ -14,7 +14,8 @@ import java.util.List;
 
 @Mapper(componentModel = "spring",
         uses = {WorkerMapper.class, MasterMapper.class},
-        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS
 )
 
 public interface WorkplaceMapper {

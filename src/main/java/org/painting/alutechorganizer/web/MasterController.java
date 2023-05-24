@@ -1,6 +1,7 @@
 package org.painting.alutechorganizer.web;
 
 import lombok.RequiredArgsConstructor;
+import org.hibernate.result.UpdateCountOutput;
 import org.painting.alutechorganizer.dto.MasterDto;
 import org.painting.alutechorganizer.service.MasterService;
 import org.springframework.stereotype.Controller;
@@ -18,9 +19,17 @@ public class MasterController {
 
     private final MasterService masterService;
 
+
+    @GetMapping("/create_master")
+    public String getCreatingForm(@ModelAttribute(name = "master") MasterDto master) {
+        return "create_master_page";
+    }
+
+
     @PostMapping("/create_master")
-    public void saveMaster(@Valid MasterDto master) {
+    public String saveMaster(@Valid MasterDto master) {
         masterService.saveMaster(master);
+        return "redirect:/masters/choose_master";
     }
 
     @DeleteMapping("/master_page")
@@ -39,9 +48,12 @@ public class MasterController {
     }
 
     @GetMapping("/choose_master")
-    public ModelAndView getAllMasters() {
-
+    public ModelAndView getAllMasters(@RequestParam(name = "workerId", required = false) Integer workerId) {
         List<MasterDto> masters = masterService.getAllMasters();
+
+        if (workerId != null) {
+            return new ModelAndView("masters_list_for_transfer", "allMasters", masters);
+        }
         return new ModelAndView("main_page", "allMasters", masters);
 
     }

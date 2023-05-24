@@ -12,7 +12,7 @@
   <table class="table table-primary mt-3">
     <thead>
     <tr>
-      <th>Employee number</th>
+      <th>Id</th>
       <th>Name</th>
       <th>Surname</th>
       <th>Profession</th>
@@ -32,7 +32,7 @@
       <td th:text="${worker.workplace != null? worker.workplace.name : ''}"></td>
       <td th:text="${worker.master.surname}"></td>
       <td>
-        <form th:action="@{/workers/list_masters_for_transfer}" method="get">
+        <form th:action="@{/masters/choose_master}" method="get">
           <button type="submit" class="btn btn-warning">Transfer worker</button>
           <input type="hidden" th:value="${worker.id}" name="workerId">
         </form>

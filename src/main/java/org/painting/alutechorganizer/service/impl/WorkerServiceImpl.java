@@ -40,9 +40,9 @@ public class WorkerServiceImpl implements WorkerService {
     }
 
     @Override
-    public WorkerDto getWorkerById(Integer id) throws WorkerNotFoundException {
+    public WorkerDto getWorkerBySurname(String surname) throws WorkerNotFoundException {
 
-        WorkerEntity workerEntity = workerRepository.findById(id).orElseThrow(WorkerNotFoundException::new);
+        WorkerEntity workerEntity = workerRepository.findBySurname(surname).orElseThrow(WorkerNotFoundException::new);
         return mapper.toWorkerDto(workerEntity);
 
     }
@@ -69,19 +69,18 @@ public class WorkerServiceImpl implements WorkerService {
     }
 
     @Override
-    public List<WorkerDto> getWorkersByMasterIdAndWorkplaceId(Integer masterId, Integer workplaceId) {
-
-        return mapper.toListDtos(workerRepository.findByMasterIdAndWorkplaceId(masterId, workplaceId));
-
-    }
-
-    @Override
     public void setNewMasterToWorker(Integer workerId, Integer masterId) {
         //или лучше сделать через линию мастеров?
         MasterEntity newMaster = masterRepository.findById(masterId).orElseThrow(MasterException::new);
         WorkerEntity worker = workerRepository.findById(workerId).orElseThrow(WorkerNotFoundException::new);
         newMaster.addWorker(worker);
 
+    }
+
+    @Override
+    public WorkerDto getWorkerById(Integer workerId) {
+        WorkerEntity workerEntity = workerRepository.findById(workerId).orElseThrow(WorkerNotFoundException::new);
+        return mapper.toWorkerDto(workerEntity);
     }
 
 }

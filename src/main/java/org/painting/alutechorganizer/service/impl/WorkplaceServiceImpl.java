@@ -81,7 +81,7 @@ public class WorkplaceServiceImpl implements WorkplaceService {
         WorkplaceEntity workplaceEntity = workplaceRepository.findById(workplaceId).orElseThrow(WorkplaceException::new);
         WorkerEntity workerEntity = workerRepository.findById(workerId).orElseThrow(WorkerNotFoundException::new);
 
-        if (workerEntity.isAvailable()) {
+        if (workerEntity.getWorkplace() == null) {
             workplaceEntity.addWorker(workerEntity);
         } else {
             throw new WorkerIsNotAvailableException();

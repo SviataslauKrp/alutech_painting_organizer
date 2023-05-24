@@ -15,7 +15,8 @@ import java.util.List;
 
 @Mapper(componentModel = "spring",
         uses = {MasterMapper.class, WorkplaceMapper.class},
-        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS
 )
 public interface WorkerMapper {
 
@@ -24,6 +25,7 @@ public interface WorkerMapper {
     WorkerDto toWorkerDto(WorkerEntity entity);
 
     @Mapping(target = "startWorking", dateFormat = "yyyy-MM-dd")
+    @Mapping(target = "isAvailable", defaultValue = "true")
     WorkerEntity toWorkerEntity(WorkerDto dto);
 
     List<WorkerEntity> toListEntities(List<WorkerDto> dtos);
