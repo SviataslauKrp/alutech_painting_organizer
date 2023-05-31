@@ -3,26 +3,36 @@ package org.painting.alutechorganizer.mapper;
 import org.mapstruct.*;
 import org.painting.alutechorganizer.domain.MasterEntity;
 import org.painting.alutechorganizer.domain.WorkerEntity;
+import org.painting.alutechorganizer.domain.WorkplaceEntity;
 import org.painting.alutechorganizer.dto.MasterDto;
 import org.painting.alutechorganizer.dto.WorkerDto;
+import org.painting.alutechorganizer.dto.WorkplaceDto;
 
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 @Mapper(componentModel = "spring",
-        uses = {WorkerMapper.class, WorkplaceMapper.class},
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS
 )
 public interface MasterMapper {
 
-    @Mapping(target = "workers", ignore = true)
+
     MasterEntity toMasterEntity(MasterDto masterDto);
 
     MasterDto toMasterDto(MasterEntity masterEntity);
 
+    @Mapping(target = "master", ignore = true)
+    @Mapping(target = "workplace", ignore = true)
+    WorkerDto toWorkerDto(WorkerEntity workerEntity);
+
+    @Mapping(target = "master", ignore = true)
+    WorkplaceDto toWorkplaceDto(WorkplaceEntity workplaceEntity);
+
     List<MasterEntity> toListEntities(List<MasterDto> dtos);
 
     List<MasterDto> toListDtos(List<MasterEntity> entities);
+
 
     void updateMasterFromDto(MasterDto masterDto, @MappingTarget MasterEntity masterEntity);
 

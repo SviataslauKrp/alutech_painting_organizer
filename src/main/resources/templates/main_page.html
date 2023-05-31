@@ -48,13 +48,24 @@
         <a th:href="@{/masters/create_master}"
            class="btn btn-primary btn-block">Create master</a>
     </div>
+
+    <div class="text-center mt-2" th:if="${param.masterId} != null">
+        <a th:href="@{/masters/delete_master(masterId=${param.masterId})}" class="btn btn-primary btn-block">Delete
+            master</a>
+    </div>
+
+    <div class="text-center mt-2" th:if="${param.masterId} != null">
+        <a th:href="@{/masters/update_master(masterId=${param.masterId})}"
+           class="btn btn-primary btn-block">Update master</a>
+    </div>
+
     <div style="position: fixed; bottom: 20%; left: 0; right: 0;" class="text-center">
         <a th:href="@{/workers/create_worker}" class="btn btn-primary mr-2" style="display: inline-block;">Create
             worker</a>
         <a th:href="@{/workers/all_workers}" class="btn btn-primary mr-2" style="display: inline-block;">View the list
             of workers</a>
-
     </div>
+
 
 </div>
 

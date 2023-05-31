@@ -24,8 +24,7 @@ public class WorkplaceEntity {
     @NotBlank
     private String name;
 
-    @OneToMany(mappedBy = "workplace",
-            fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "workplace")
     private List<WorkerEntity> workers;
 
     @ManyToOne

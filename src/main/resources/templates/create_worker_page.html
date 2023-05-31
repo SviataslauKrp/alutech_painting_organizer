@@ -32,17 +32,16 @@
         </div>
 
         <div class="form-group">
-            <select class="form-control" th:field="*{master.id}" id="master" required>
+            <select class="form-control" id="masterId" name="masterId" required>
                 <option value="">Choose master</option>
                 <option th:each="master : ${allMasters}" th:value="${master.id}" th:text="${master.surname}"></option>
             </select>
-<!--            <p th:if="${#fields.hasErrors('master.id')}" class="text-danger">Please choose a master</p>-->
         </div>
-
 
         <button type="submit" class="btn btn-primary btn-block" style="margin-top: 250px;">Create</button>
 
     </form>
+
 </div>
 <script th:src="@{https://code.jquery.com/jquery-3.3.1.slim.min.js}"></script>
 <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js}"></script>

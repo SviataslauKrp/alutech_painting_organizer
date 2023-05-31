@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface WorkerService {
 
-    void saveWorker(WorkerDto workerDto);
+    void saveWorker(WorkerDto workerDto, Integer masterId);
 
     List<WorkerDto> getAllWorkers();
 
@@ -15,7 +15,7 @@ public interface WorkerService {
 
     void deleteWorkerById(Integer id);
 
-    void updateWorker(WorkerDto worker, Integer id);
+    void updateWorker(WorkerDto newWorkerVersion, Integer id);
 
     List<WorkerDto> getWorkersByMasterId(Integer masterId);
 

@@ -11,18 +11,26 @@ import org.painting.alutechorganizer.dto.WorkplaceDto;
 import org.painting.alutechorganizer.exc.MasterException;
 import org.painting.alutechorganizer.exc.WorkplaceException;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.util.List;
 
 @Mapper(componentModel = "spring",
-        uses = {MasterMapper.class, WorkplaceMapper.class},
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS
 )
 public interface WorkerMapper {
 
-    @Mapping(source = "master", target = "master", qualifiedByName = "toMasterDto")
-    @Mapping(source = "workplace", target = "workplace", qualifiedByName = "toWorkplaceDto")
     WorkerDto toWorkerDto(WorkerEntity entity);
+
+    @Mapping(target = "workers", ignore = true)
+    MasterDto toMasterDto(MasterEntity masterEntity);
+
+    @Mapping(target = "workers", ignore = true)
+    @Mapping(target = "master", ignore = true)
+    WorkplaceDto toWorkplaceDto(WorkplaceEntity workplaceEntity);
 
     @Mapping(target = "startWorking", dateFormat = "yyyy-MM-dd")
     @Mapping(target = "isAvailable", defaultValue = "true")
@@ -33,32 +41,6 @@ public interface WorkerMapper {
     List<WorkerDto> toListDtos(List<WorkerEntity> entities);
 
     void updateWorkerFromDto(WorkerDto workerDto, @MappingTarget WorkerEntity workerEntity);
-
-    @Named("toMasterDto")
-    default MasterDto toMasterDto(MasterEntity masterEntity) {
-        if (masterEntity == null) {
-            return null;
-        }
-
-        return MasterDto.builder()
-                .id(masterEntity.getId())
-                .name(masterEntity.getName())
-                .surname(masterEntity.getSurname())
-                .build();
-    }
-
-    @Named("toWorkplaceDto")
-    default WorkplaceDto toWorkplaceDto(WorkplaceEntity workplaceEntity) {
-        if (workplaceEntity == null) {
-            return null;
-        }
-
-        return WorkplaceDto.builder()
-                .id(workplaceEntity.getId())
-                .name(workplaceEntity.getName())
-                .master(toMasterDto(workplaceEntity.getMaster()))
-                .build();
-    }
 
 }
 

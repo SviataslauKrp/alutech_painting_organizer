@@ -21,7 +21,6 @@ import java.util.List;
 @RequiredArgsConstructor
 
 @Service
-@Transactional
 public class WorkplaceServiceImpl implements WorkplaceService {
 
     private final WorkplaceMapper workplaceMapper;
@@ -43,9 +42,6 @@ public class WorkplaceServiceImpl implements WorkplaceService {
     public List<WorkplaceDto> getAllWorkplaces() {
 
         List<WorkplaceEntity> allWorkplaceEntities = workplaceRepository.findAll();
-        if (allWorkplaceEntities.isEmpty()) {
-            throw new EmptyWorkplacesListException();
-        }
         return workplaceMapper.toListDtos(allWorkplaceEntities);
 
     }
@@ -58,6 +54,7 @@ public class WorkplaceServiceImpl implements WorkplaceService {
 
     }
 
+    @Transactional
     @Override
     public void deleteWorkplaceById(Integer id) {
 
@@ -67,6 +64,7 @@ public class WorkplaceServiceImpl implements WorkplaceService {
 
     }
 
+    @Transactional
     @Override
     public void updateWorkplaceById(WorkplaceDto workplaceDto, Integer id) {
 
@@ -75,6 +73,7 @@ public class WorkplaceServiceImpl implements WorkplaceService {
 
     }
 
+    @Transactional
     @Override
     public void addWorkerToWorkplace(Integer workerId, Integer workplaceId) {
 
@@ -89,6 +88,7 @@ public class WorkplaceServiceImpl implements WorkplaceService {
 
     }
 
+    @Transactional
     @Override
     public void removeWorkerFromWorkplace(Integer workerId, Integer workplaceId) {
 

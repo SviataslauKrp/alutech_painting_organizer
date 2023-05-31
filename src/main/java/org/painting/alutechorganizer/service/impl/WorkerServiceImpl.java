@@ -5,7 +5,7 @@ import org.painting.alutechorganizer.domain.MasterEntity;
 import org.painting.alutechorganizer.domain.WorkerEntity;
 import org.painting.alutechorganizer.dto.WorkerDto;
 import org.painting.alutechorganizer.exc.MasterException;
-import org.painting.alutechorganizer.exc.WorkerNotFoundException;
+import org.painting.alutechorganizer.exc.WorkerException;
 import org.painting.alutechorganizer.mapper.WorkerMapper;
 import org.painting.alutechorganizer.repository.MasterRepository;
 import org.painting.alutechorganizer.repository.WorkerRepository;
@@ -18,7 +18,6 @@ import java.util.List;
 @RequiredArgsConstructor
 
 @Service
-@Transactional
 public class WorkerServiceImpl implements WorkerService {
 
     private final WorkerRepository workerRepository;
@@ -26,8 +25,10 @@ public class WorkerServiceImpl implements WorkerService {
     private final WorkerMapper mapper;
 
     @Override
-    public void saveWorker(WorkerDto workerDto) {
+    public void saveWorker(WorkerDto workerDto, Integer masterId) {
+        MasterEntity masterEntity = masterRepository.findById(masterId).orElseThrow(() -> new MasterException("The master isn't found"));
         WorkerEntity workerEntity = mapper.toWorkerEntity(workerDto);
+        workerEntity.setMaster(masterEntity);
         workerRepository.save(workerEntity);
     }
 
@@ -40,23 +41,31 @@ public class WorkerServiceImpl implements WorkerService {
     }
 
     @Override
-    public WorkerDto getWorkerBySurname(String surname) throws WorkerNotFoundException {
+    public WorkerDto getWorkerBySurname(String surname) {
 
-        WorkerEntity workerEntity = workerRepository.findBySurname(surname).orElseThrow(WorkerNotFoundException::new);
+        WorkerEntity workerEntity = workerRepository.findBySurname(surname).orElseThrow(() -> new WorkerException("The worker isn't found"));
         return mapper.toWorkerDto(workerEntity);
 
     }
 
+    @Transactional
     @Override
     public void deleteWorkerById(Integer id) {
         workerRepository.deleteById(id);
     }
 
+    @Transactional
     @Override
-    public void updateWorker(WorkerDto workerDto, Integer id) {
+    public void updateWorker(WorkerDto newWorkerVersion,
+                             Integer id) {
 
-        WorkerEntity workerEntity = workerRepository.findById(id).orElseThrow(WorkerNotFoundException::new);
-        mapper.updateWorkerFromDto(workerDto, workerEntity);
+        WorkerEntity oldWorkerVersion = workerRepository.findById(id).orElseThrow(() -> new WorkerException("The worker isn't found"));
+
+        if (oldWorkerVersion.getIsAvailable() && !newWorkerVersion.getIsAvailable()) {
+            oldWorkerVersion.setWorkplace(null);
+        }
+
+        mapper.updateWorkerFromDto(newWorkerVersion, oldWorkerVersion);
 
     }
 
@@ -68,18 +77,18 @@ public class WorkerServiceImpl implements WorkerService {
 
     }
 
+    @Transactional
     @Override
     public void setNewMasterToWorker(Integer workerId, Integer masterId) {
-        //или лучше сделать через линию мастеров?
-        MasterEntity newMaster = masterRepository.findById(masterId).orElseThrow(MasterException::new);
-        WorkerEntity worker = workerRepository.findById(workerId).orElseThrow(WorkerNotFoundException::new);
+        MasterEntity newMaster = masterRepository.findById(masterId).orElseThrow(() -> new MasterException("The master isn't found"));
+        WorkerEntity worker = workerRepository.findById(workerId).orElseThrow(() -> new WorkerException("The worker isn't found"));
         newMaster.addWorker(worker);
 
     }
 
     @Override
     public WorkerDto getWorkerById(Integer workerId) {
-        WorkerEntity workerEntity = workerRepository.findById(workerId).orElseThrow(WorkerNotFoundException::new);
+        WorkerEntity workerEntity = workerRepository.findById(workerId).orElseThrow(() -> new WorkerException("The worker isn't found"));
         return mapper.toWorkerDto(workerEntity);
     }
 

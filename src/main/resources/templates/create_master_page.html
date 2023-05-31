@@ -1,18 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Create master</title>
-</head>
-<body>
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
->
+<html xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <meta charset="UTF-8">
-  <title>Create Worker Form</title>
+  <title>Create Master Form</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
+
 <body>
 <div class="container">
   <h1>Create Master Form</h1>
@@ -29,12 +23,14 @@
     <button type="submit" class="btn btn-primary btn-block" style="margin-top: 250px;">Create</button>
 
   </form>
+  <div class="text-center mt-2">
+    <a class="btn btn-primary btn-block btn-lg" href="/masters/choose_master">Main page</a>
+  </div>
 </div>
+
 <script th:src="@{https://code.jquery.com/jquery-3.3.1.slim.min.js}"></script>
 <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js}"></script>
 <script th:src="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
 </body>
-</html>
 
-</body>
 </html>

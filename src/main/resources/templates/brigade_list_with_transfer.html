@@ -35,6 +35,7 @@
         <form th:action="@{/masters/choose_master}" method="get">
           <button type="submit" class="btn btn-warning">Transfer worker</button>
           <input type="hidden" th:value="${worker.id}" name="workerId">
+          <input type="hidden" th:value="${param.oldMasterId}" name="oldMasterId">
         </form>
       </td>
     </tr>

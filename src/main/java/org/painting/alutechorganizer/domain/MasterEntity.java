@@ -29,8 +29,7 @@ public class MasterEntity {
             fetch = FetchType.EAGER)
     private List<WorkerEntity> workers;
 
-    @OneToMany(mappedBy = "master",
-            fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "master")
     private List<WorkplaceEntity> workplaces;
 
 
@@ -39,13 +38,6 @@ public class MasterEntity {
         workers.add(worker);
         worker.setMaster(this);
         worker.setWorkplace(null);
-
-    }
-
-    public void removeWorker(WorkerEntity worker) {
-
-        workers.remove(worker);
-        worker.getAwayFromMaster();
 
     }
 

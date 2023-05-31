@@ -254,19 +254,4 @@ class MasterServiceImplTest {
 
     }
 
-    @Test
-    void testRemoveWorkerFromMaster() {
-
-        //given
-        when(masterRepository.findById(testMasterEntity.getId())).thenReturn(Optional.of(testMasterEntity));
-        when(workerRepository.findById(workerWithMaster.getId())).thenReturn(Optional.of(workerWithMaster));
-
-        //when
-        service.removeWorkerFromMaster(workerWithMaster.getId(), testMasterEntity.getId());
-
-        //then
-        assertEquals(0, testMasterEntity.getWorkers().size());
-        assertNull(workerWithMaster.getMaster());
-
-    }
 }

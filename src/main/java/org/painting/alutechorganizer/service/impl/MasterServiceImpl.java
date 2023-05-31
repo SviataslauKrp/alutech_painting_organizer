@@ -3,31 +3,27 @@ package org.painting.alutechorganizer.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.painting.alutechorganizer.domain.MasterEntity;
 import org.painting.alutechorganizer.domain.WorkerEntity;
-import org.painting.alutechorganizer.domain.WorkplaceEntity;
 import org.painting.alutechorganizer.dto.MasterDto;
 import org.painting.alutechorganizer.exc.MasterException;
 import org.painting.alutechorganizer.exc.WorkerNotFoundException;
 import org.painting.alutechorganizer.mapper.MasterMapper;
 import org.painting.alutechorganizer.repository.MasterRepository;
 import org.painting.alutechorganizer.repository.WorkerRepository;
-import org.painting.alutechorganizer.repository.WorkplaceRepository;
 import org.painting.alutechorganizer.service.MasterService;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 @RequiredArgsConstructor
 
 @Service
-@Transactional
 public class MasterServiceImpl implements MasterService {
 
     private final MasterRepository masterRepository;
     private final WorkerRepository workerRepository;
     private final MasterMapper masterMapper;
-    private final WorkplaceRepository workplaceRepository;
 
 
     @Override
@@ -38,11 +34,16 @@ public class MasterServiceImpl implements MasterService {
 
     }
 
+    @Transactional
     @Override
     public void deleteMasterById(Integer id) {
 
-        MasterEntity masterEntity = masterRepository.findById(id).orElseThrow(MasterException::new);
-        masterEntity.getWorkers().forEach(WorkerEntity::getAwayFromMaster);
+        MasterEntity masterEntity = masterRepository.findById(id).orElseThrow(() -> new MasterException("The master isn't found"));
+
+        if (masterEntity.getWorkers().size() != 0) {
+            throw new MasterException("You need to transfer all your workers to another master");
+        }
+
         masterRepository.deleteById(id);
 
     }
@@ -50,16 +51,18 @@ public class MasterServiceImpl implements MasterService {
     @Override
     public MasterDto getMasterById(Integer id) {
 
-        MasterEntity masterEntity = masterRepository.findById(id).orElseThrow(MasterException::new);
+        MasterEntity masterEntity = masterRepository.findById(id).orElseThrow(() -> new MasterException("The master isn't found"));
         return masterMapper.toMasterDto(masterEntity);
 
     }
 
+    @Transactional
     @Override
     public void updateMasterById(MasterDto masterDto, Integer id) {
 
-        MasterEntity masterEntity = masterRepository.findById(id).orElseThrow(MasterException::new);
+        MasterEntity masterEntity = masterRepository.findById(id).orElseThrow(() -> new MasterException("The master isn't found"));
         masterMapper.updateMasterFromDto(masterDto, masterEntity);
+
 
     }
 
@@ -71,25 +74,14 @@ public class MasterServiceImpl implements MasterService {
 
     }
 
+    @Transactional
     @Override
     public void addWorkerToMaster(Integer workerId, Integer masterId) {
 
-        MasterEntity masterEntity = masterRepository.findById(masterId).orElseThrow(MasterException::new);
+        MasterEntity masterEntity = masterRepository.findById(masterId).orElseThrow(() -> new MasterException("The master isn't found"));
         WorkerEntity workerEntity = workerRepository.findById(workerId).orElseThrow(WorkerNotFoundException::new);
 
         masterEntity.addWorker(workerEntity);
-    }
-
-    @Override
-    public void removeWorkerFromMaster(Integer workerId, Integer masterId) {
-
-        MasterEntity masterEntity = masterRepository.findById(masterId).orElseThrow(MasterException::new);
-        WorkerEntity workerEntity = workerRepository.findById(workerId).orElseThrow(WorkerNotFoundException::new);
-
-        if (masterEntity.getWorkers().contains(workerEntity)) {
-            masterEntity.removeWorker(workerEntity);
-        }
-
     }
 
 }

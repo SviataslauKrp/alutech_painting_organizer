@@ -1,23 +1,16 @@
 package org.painting.alutechorganizer.web;
 
 import lombok.RequiredArgsConstructor;
-import org.painting.alutechorganizer.domain.WorkplaceEntity;
-import org.painting.alutechorganizer.dto.MasterDto;
-import org.painting.alutechorganizer.dto.WorkerDto;
 import org.painting.alutechorganizer.dto.WorkplaceDto;
-import org.painting.alutechorganizer.service.MasterService;
-import org.painting.alutechorganizer.service.WorkerService;
+import org.painting.alutechorganizer.exc.WorkplaceException;
 import org.painting.alutechorganizer.service.WorkplaceService;
-import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
 @RequiredArgsConstructor
@@ -37,8 +30,11 @@ public class WorkplaceController {
 
     @PostMapping("/create_workplace")
     public String createWorkplace(@Valid WorkplaceDto workplace,
+                                  BindingResult bindingResult,
                                   @RequestParam(name = "masterId") Integer masterId) {
-
+        if (bindingResult.hasErrors()) {
+            throw new WorkplaceException("The workplace hasn't been created");
+        }
         workplaceService.saveWorkplace(workplace, masterId);
         return String.format("redirect:/workplaces/get_all_workplaces?masterId=%d", masterId);
 
@@ -65,6 +61,7 @@ public class WorkplaceController {
         return String.format("redirect:/workplaces/get_all_workplaces?masterId=%d", masterId);
     }
 
+    //update
     @GetMapping("/update_workplace")
     public ModelAndView getUpdatePage(@RequestParam(name = "workplaceId") Integer workplaceId,
                                       @RequestParam(name = "masterId") Integer masterId) {
@@ -75,9 +72,10 @@ public class WorkplaceController {
     }
 
     @PostMapping("/update_workplace")
-    public String updateWorkplaceById(@Valid WorkplaceDto workplace,
+    public String updateWorkplaceById(WorkplaceDto workplace,
                                       @RequestParam(name = "workplaceId") Integer workplaceId,
                                       @RequestParam(name = "masterId") Integer masterId) {
+
         workplaceService.updateWorkplaceById(workplace, workplaceId);
         return String.format("redirect:/workplaces/get_all_workplaces?masterId=%d", masterId);
 
@@ -89,7 +87,6 @@ public class WorkplaceController {
                                        @RequestParam(name = "masterId") Integer masterId) {
 
         workplaceService.addWorkerToWorkplace(workerId, workplaceId);
-        //не похоже на решение на коленке?
         return String.format("redirect:/workplaces/get_all_workplaces?masterId=%d", masterId);
 
     }

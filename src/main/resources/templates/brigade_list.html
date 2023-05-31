@@ -14,7 +14,7 @@
     <form method="get" th:action="@{/workers/find_worker}">
         <div class="input-group mb-3 mt-3">
             <input type="text" class="form-control" name="foundWorkerSurname" placeholder="Enter worker surname"
-                   required>
+                   required pattern=".*\S+.*">
             <input type="hidden" name="masterId" th:value="${param.masterId}">
             <button class="btn btn-primary" type="submit">Search</button>
         </div>

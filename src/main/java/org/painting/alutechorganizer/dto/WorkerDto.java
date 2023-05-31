@@ -15,20 +15,14 @@ public class WorkerDto {
 
     @NotBlank
     private String name;
-
     @NotBlank
     private String surname;
-
-    @NotBlank
-    private String startWorking;
-
-    private WorkplaceDto workplace;
-
-    @NotBlank
-    private String profession;
     @NotNull
+    private String startWorking;
+    private WorkplaceDto workplace;
+    @NotNull
+    private String profession;
     private MasterDto master;
-
     private String note;
     private Boolean isAvailable;
 

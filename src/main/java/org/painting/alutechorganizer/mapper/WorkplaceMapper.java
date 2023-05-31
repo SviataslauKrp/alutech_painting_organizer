@@ -13,7 +13,6 @@ import org.painting.alutechorganizer.exc.MasterException;
 import java.util.List;
 
 @Mapper(componentModel = "spring",
-        uses = {WorkerMapper.class, MasterMapper.class},
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS
 )
@@ -23,26 +22,20 @@ public interface WorkplaceMapper {
 
     WorkplaceEntity toWorkplaceEntity(WorkplaceDto dto);
 
-    @Mapping(source = "master", target = "master", qualifiedByName = "toMasterDtoIntoWorkplaceMapper")
+
     WorkplaceDto toWorkplaceDto(WorkplaceEntity entity);
+
+    @Mapping(target = "workplaces", ignore = true)
+    @Mapping(target = "workers", ignore = true)
+    MasterDto toMasterDto(MasterEntity masterEntity);
+
+    @Mapping(target = "workplace", ignore = true)
+    WorkerDto toWorkerDto(WorkerEntity workerEntity);
 
     List<WorkplaceEntity> toListEntities(List<WorkplaceDto> dtos);
 
     List<WorkplaceDto> toListDtos(List<WorkplaceEntity> entities);
 
     void updateWorkplaceFromDto(WorkplaceDto workplaceDto, @MappingTarget WorkplaceEntity workplaceEntity);
-
-    @Named("toMasterDtoIntoWorkplaceMapper")
-    default MasterDto toMasterDto(MasterEntity entity) {
-        if (entity == null) {
-            throw new MasterException();
-        }
-
-        return MasterDto.builder()
-                .id(entity.getId())
-                .name(entity.getName())
-                .surname(entity.getSurname())
-                .build();
-    }
 
 }

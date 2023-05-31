@@ -11,7 +11,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: #f0f8ff; /* Нежно-голубой цвет фона */
+            background-color: #f0f8ff;
         }
 
         .container {
@@ -29,7 +29,7 @@
     <form th:action="@{/workplaces/update_workplace}" th:object="${workplace}" method="post">
         <div class="form-group">
             <label for="name" class="form-label">Name</label>
-            <input type="text" class="form-control" id="name" th:field="*{name}" required pattern=".*\S+.*">
+            <input type="text" class="form-control" id="name" th:field="*{name}" >
         </div>
         <input type="hidden" th:value="${param.masterId}" name="masterId">
         <input type="hidden" th:value="${workplace.id}" name="workplaceId">

@@ -58,7 +58,7 @@ class WorkerServiceImplTest {
         when(mapper.toWorkerEntity(any(WorkerDto.class))).thenReturn(testWorkerEntity);
 
         //when
-        service.saveWorker(testWorkerDto);
+        service.saveWorker(testWorkerDto, any());
 
         //then
         verify(mapper, times(1)).toWorkerEntity(any(WorkerDto.class));

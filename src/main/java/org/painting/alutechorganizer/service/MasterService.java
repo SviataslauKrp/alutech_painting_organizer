@@ -18,5 +18,4 @@ public interface MasterService {
 
     void addWorkerToMaster(Integer workerId, Integer masterId);
 
-    void removeWorkerFromMaster(Integer workerId, Integer masterId);
 }

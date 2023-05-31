@@ -12,13 +12,9 @@ import java.util.List;
 public class WorkplaceDto {
 
     private Integer id;
-
     @NotBlank
     private String name;
-
     private List<WorkerDto> workers;
-
-    @NonNull
     private MasterDto master;
 
 }
