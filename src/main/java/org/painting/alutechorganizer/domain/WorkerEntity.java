@@ -38,6 +38,10 @@ public class WorkerEntity {
     @NotNull
     private MasterEntity master;
 
+    @OneToOne(mappedBy = "worker")
+//    @NotNull
+    private UserEmployee auth;
+
     private String note;
 
     @Column(name = "is_available",
@@ -47,10 +51,6 @@ public class WorkerEntity {
 
     public void leaveWorkplace() {
         workplace = null;
-    }
-
-    public void getAwayFromMaster() {
-        master = null;
     }
 
 }

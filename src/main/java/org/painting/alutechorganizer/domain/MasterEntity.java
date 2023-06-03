@@ -25,12 +25,14 @@ public class MasterEntity {
     @NotBlank
     private String surname;
 
-    @OneToMany(mappedBy = "master",
-            fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "master")
     private List<WorkerEntity> workers;
 
     @OneToMany(mappedBy = "master")
     private List<WorkplaceEntity> workplaces;
+
+    @OneToOne(mappedBy = "master")
+    private UserEmployee user;
 
 
     public void addWorker(WorkerEntity worker) {
