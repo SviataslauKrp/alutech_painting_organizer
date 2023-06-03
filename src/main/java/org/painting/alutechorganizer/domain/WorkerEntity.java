@@ -39,8 +39,7 @@ public class WorkerEntity {
     private MasterEntity master;
 
     @OneToOne(mappedBy = "worker")
-//    @NotNull
-    private UserEmployee auth;
+    private UserEmployee user;
 
     private String note;
 

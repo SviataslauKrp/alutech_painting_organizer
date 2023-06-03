@@ -5,6 +5,7 @@ import org.painting.alutechorganizer.dto.WorkplaceDto;
 import org.painting.alutechorganizer.exc.WorkplaceException;
 import org.painting.alutechorganizer.service.WorkplaceService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,9 +22,9 @@ public class WorkplaceController {
     private final WorkplaceService workplaceService;
 
     @GetMapping("/create_workplace")
-    public ModelAndView getCreateFormForWorkplace(@ModelAttribute(name = "workplace") WorkplaceDto workplace,
+    public ModelAndView getCreateFormForWorkplace(Model model,
                                                   @RequestParam(name = "masterId") Integer masterId) {
-
+        model.addAttribute("workplace", new WorkplaceDto());
         return new ModelAndView("create_workplace_page");
 
     }

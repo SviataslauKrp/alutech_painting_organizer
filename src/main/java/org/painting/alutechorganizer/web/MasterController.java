@@ -1,20 +1,20 @@
 package org.painting.alutechorganizer.web;
 
 import lombok.RequiredArgsConstructor;
-import org.hibernate.result.UpdateCountOutput;
+import org.painting.alutechorganizer.domain.UserEmployee;
 import org.painting.alutechorganizer.dto.MasterDto;
 import org.painting.alutechorganizer.exc.MasterException;
 import org.painting.alutechorganizer.service.MasterService;
-import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.validation.ConstraintViolationException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.net.http.HttpRequest;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -27,27 +27,28 @@ public class MasterController {
 
 
     //create
-    @GetMapping("/create_master")
-    public String getCreatingForm(@ModelAttribute(name = "master") MasterDto master) {
-        return "create_master_page";
-    }
+//    @GetMapping("/create_master")
+//    public String getCreatingForm(@ModelAttribute(name = "master") MasterDto master) {
+//        return "create_master_page";
+//    }
 
 
-    @PostMapping("/create_master")
-    public String saveMaster(@Valid MasterDto master,
-                             BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            throw new MasterException("The master hasn't been created");
-        }
-        masterService.saveMaster(master);
-        return "redirect:/masters/choose_master";
-
-    }
+//    @PostMapping("/create_master")
+//    public String saveMaster(@Valid MasterDto master,
+//                             BindingResult bindingResult) {
+//        if (bindingResult.hasErrors()) {
+//            throw new MasterException("The master hasn't been created");
+//        }
+//        masterService.saveMaster(master);
+//        return "redirect:/masters/choose_master";
+//
+//    }
 
     //read
 
     @GetMapping("/choose_master")
     public ModelAndView getAllMasters(@RequestParam(name = "workerId", required = false) Integer workerId) {
+
         List<MasterDto> masters = masterService.getAllMasters();
 
         if (workerId != null) {
@@ -85,6 +86,11 @@ public class MasterController {
     public void addWorkerToMaster(@RequestParam Integer workerId,
                                   @RequestParam Integer masterId) {
         masterService.addWorkerToMaster(workerId, masterId);
+    }
+
+    private Integer getMasterId() {
+        UserEmployee principal = (UserEmployee) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return principal.getMaster().getId();
     }
 
 }

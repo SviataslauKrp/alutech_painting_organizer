@@ -10,6 +10,7 @@ import org.painting.alutechorganizer.exc.WorkerException;
 import org.painting.alutechorganizer.service.MasterService;
 import org.painting.alutechorganizer.service.WorkerService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -44,8 +45,9 @@ public class WorkerController {
 
 
     @GetMapping("/create_worker")
-    public ModelAndView getCreatingForm(@ModelAttribute("worker") WorkerDto worker) {
+    public ModelAndView getCreatingForm(Model model) {
         List<MasterDto> allMasters = masterService.getAllMasters();
+        model.addAttribute("worker", new WorkerDto());
         return new ModelAndView("create_worker_page", "allMasters", allMasters);
     }
 

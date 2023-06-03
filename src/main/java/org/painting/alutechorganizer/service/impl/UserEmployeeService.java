@@ -47,7 +47,6 @@ public class UserEmployeeService implements UserDetailsService {
             return false;
         }
         MasterEntity masterEntity = masterMapper.toMasterEntity(masterDto);
-        masterRepository.save(masterEntity);
 
         user.setMaster(masterEntity);
         user.setRoles(Collections.singleton(new Role("ROLE_MASTER")));

@@ -33,11 +33,13 @@ public class UserEmployee implements UserDetails {
     private String password;
     @Transient
     private String passwordConfirm;
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @JoinTable(name = "employees_roles",
+            joinColumns = @JoinColumn(name = "employee_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
-    @OneToOne
-    @Cascade(org.hibernate.annotations.CascadeType.DELETE)
+    @OneToOne(cascade = CascadeType.ALL)
     private MasterEntity master;
 
     @OneToOne
