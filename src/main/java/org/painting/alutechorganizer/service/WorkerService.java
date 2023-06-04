@@ -1,5 +1,7 @@
 package org.painting.alutechorganizer.service;
 
+import org.painting.alutechorganizer.domain.UserEmployee;
+import org.painting.alutechorganizer.domain.WorkerEntity;
 import org.painting.alutechorganizer.dto.WorkerDto;
 import org.painting.alutechorganizer.exc.WorkerNotFoundException;
 
@@ -7,11 +9,11 @@ import java.util.List;
 
 public interface WorkerService {
 
-    void saveWorker(WorkerDto workerDto, Integer masterId);
+    WorkerEntity setToMaster(WorkerDto workerDto, Integer masterId);
 
     List<WorkerDto> getAllWorkers();
 
-    WorkerDto getWorkerBySurname(String surname) throws WorkerNotFoundException;
+    List<WorkerDto> getWorkerBySurnameAndMasterId(String surname, Integer masterId) throws WorkerNotFoundException;
 
     void deleteWorkerById(Integer id);
 

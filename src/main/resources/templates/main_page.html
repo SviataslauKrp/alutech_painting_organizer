@@ -20,54 +20,47 @@
 </head>
 <body>
 <div class="container mt-5">
-    <h1 class="text-center mb-4">Выберите мастера</h1>
-    <form th:action="@{/masters/choose_master}" method="get">
-        <div class="form-group row">
-            <div class="col-sm-12">
-                <select class="form-control" id="master-select" name="masterId" onchange="this.form.submit()">
-                    <option value="">Выберите мастера...</option>
-                    <option th:each="master : ${allMasters}" th:value="${master.id}"
-                            th:text="${master.name} + ' ' + ${master.surname}"></option>
-                </select>
-            </div>
-        </div>
-    </form>
-    <div class="text-center" th:if="${param.masterId} != null">
-        <a th:href="@{/workers/get_workers_by_master_id(masterId=${param.masterId})}" class="btn btn-primary btn-block">View
+
+    <h1 th:text="${master.surname}"></h1>
+
+    <div class="text-center">
+        <a th:href="@{/workers/get_workers_by_master_id}" class="btn btn-info btn-block">View
             brigade</a>
     </div>
-    <div class="text-center mt-2" th:if="${param.masterId} != null">
-        <a th:href="@{/workplaces/get_all_workplaces(masterId=${param.masterId})}" class="btn btn-primary btn-block">Set
+    <div class="text-center mt-2">
+        <a th:href="@{/workplaces/get_all_workplaces}" class="btn btn-primary btn-block">Set
             positions</a>
     </div>
-    <div class="text-center mt-2" th:if="${param.masterId} != null">
-        <a th:href="@{/workers/transfer_worker_to_another_master(masterId=${param.masterId})}"
-           class="btn btn-primary btn-block">Transfer worker</a>
-    </div>
-    <div class="text-center mt-2" th:if="${param.masterId} != null">
-        <a th:href="@{/masters/create_master}"
-           class="btn btn-primary btn-block">Create master</a>
+    <div class="text-center mt-2">
+        <a th:href="@{/workers/transfer_worker_to_another_master}"
+           class="btn btn-success btn-block">Transfer worker</a>
     </div>
 
-    <div class="text-center mt-2" th:if="${param.masterId} != null">
-        <a th:href="@{/masters/delete_master(masterId=${param.masterId})}" class="btn btn-primary btn-block">Delete
+    <div class="text-center mt-2">
+        <a th:href="@{/masters/delete_master}" class="btn btn-danger btn-block">Delete
             master</a>
     </div>
 
-    <div class="text-center mt-2" th:if="${param.masterId} != null">
-        <a th:href="@{/masters/update_master(masterId=${param.masterId})}"
-           class="btn btn-primary btn-block">Update master</a>
+    <div class="text-center mt-2">
+        <a th:href="@{/masters/update_master}"
+           class="btn btn-warning btn-block">Update master</a>
     </div>
 
-    <div class="text-center mt-2" th:if="${param.masterId} != null">
-        <a th:href="@{/workers/create_worker}" class="btn btn-primary btn-block">Create
+    <div class="text-center mt-2">
+        <a th:href="@{/registration/create_worker}" class="btn btn-success btn-block">Create
             worker</a>
     </div>
 
-    <div style="position: fixed; bottom: 20%; left: 0; right: 0;" class="text-center">
-        <a th:href="@{/workers/all_workers}" class="btn btn-primary mr-2" style="display: inline-block;">View the list
+    <div class="text-center mt-2">
+        <a th:href="@{/workers/all_workers}" class="btn btn-info btn-block">View the list
             of workers</a>
     </div>
+
+    <form th:action="@{/logout}" method="post">
+        <div class="text-center mt-2">
+            <button class="btn btn-danger btn-block" type="submit">Logout</button>
+        </div>
+    </form>
 
 
 </div>

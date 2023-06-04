@@ -42,7 +42,6 @@
                     <td>
                         <form th:action="@{/workplaces/remove_worker_from_workplace(workerId=${worker.id}, workplaceId=${workplace.id})}"
                               method="post">
-                            <input type="hidden" name="masterId" th:value="${param.masterId}">
                             <button type="submit" class="btn btn-danger btn-sm">Remove</button>
                         </form>
                     </td>
@@ -51,17 +50,14 @@
             </table>
             <div class="text-center mt-4">
                 <form method="get" th:action="@{/workers/get_workers_by_master_id}" style="display: inline;">
-                    <input type="hidden" name="masterId" th:value="${param.masterId}"/>
                     <input type="hidden" name="workplaceId" th:value="${workplace.id}"/>
                     <button type="submit" class="btn btn-primary">Add Worker</button>
                 </form>
                 <form method="get" th:action="@{/workplaces/update_workplace}" style="display: inline;">
-                    <input type="hidden" name="masterId" th:value="${param.masterId}">
                     <input type="hidden" name="workplaceId" th:value="${workplace.id}"/>
                     <button type="submit" class="btn btn-warning ml-2">Rename workplace</button>
                 </form>
                 <form method="post" th:action="@{/workplaces/delete_workplace}" style="display: inline;">
-                    <input type="hidden" name="masterId" th:value="${param.masterId}">
                     <input type="hidden" name="workplaceId" th:value="${workplace.id}"/>
                     <button type="submit" class="btn btn-danger ml-2">Delete workplace</button>
                 </form>
@@ -71,10 +67,10 @@
     </div>
     <div class="row">
         <div class="col-12 d-flex justify-content-center mt-6">
-            <a th:href="@{/workplaces/create_workplace(masterId=${param.masterId})}" class="btn btn-primary col-6">Create workplace</a>
+            <a th:href="@{/workplaces/create_workplace}" class="btn btn-primary col-6">Create workplace</a>
         </div>
         <div class="col-12 d-flex justify-content-center mt-3">
-            <a th:href="@{/workers/get_workers_by_master_id(masterId=${param.masterId})}" class="btn btn-primary col-6">View brigade</a>
+            <a th:href="@{/workers/get_workers_by_master_id}" class="btn btn-primary col-6">View brigade</a>
         </div>
     </div>
 

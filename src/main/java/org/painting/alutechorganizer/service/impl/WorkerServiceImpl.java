@@ -25,11 +25,11 @@ public class WorkerServiceImpl implements WorkerService {
     private final WorkerMapper mapper;
 
     @Override
-    public void saveWorker(WorkerDto workerDto, Integer masterId) {
+    public WorkerEntity setToMaster(WorkerDto workerDto, Integer masterId) {
         MasterEntity masterEntity = masterRepository.findById(masterId).orElseThrow(() -> new MasterException("The master isn't found"));
         WorkerEntity workerEntity = mapper.toWorkerEntity(workerDto);
-        workerEntity.setMaster(masterEntity);
-        workerRepository.save(workerEntity);
+        masterEntity.addWorker(workerEntity);
+        return workerEntity;
     }
 
     @Override
@@ -41,10 +41,10 @@ public class WorkerServiceImpl implements WorkerService {
     }
 
     @Override
-    public WorkerDto getWorkerBySurname(String surname) {
+    public List<WorkerDto> getWorkerBySurnameAndMasterId(String surname, Integer masterId) {
 
-        WorkerEntity workerEntity = workerRepository.findBySurname(surname).orElseThrow(() -> new WorkerException("The worker isn't found"));
-        return mapper.toWorkerDto(workerEntity);
+        List<WorkerEntity> workerEntity = workerRepository.findBySurnameAndMasterId(surname, masterId).orElseThrow(() -> new WorkerException("The worker isn't found"));
+        return mapper.toListDtos(workerEntity);
 
     }
 

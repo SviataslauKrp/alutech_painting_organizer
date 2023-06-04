@@ -16,6 +16,4 @@ public interface MasterService {
 
     List<MasterDto> getAllMasters();
 
-    void addWorkerToMaster(Integer workerId, Integer masterId);
-
 }

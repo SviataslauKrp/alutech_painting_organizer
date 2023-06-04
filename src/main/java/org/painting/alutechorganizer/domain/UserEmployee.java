@@ -33,7 +33,7 @@ public class UserEmployee implements UserDetails {
     private String password;
     @Transient
     private String passwordConfirm;
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, fetch = FetchType.EAGER)
     @JoinTable(name = "employees_roles",
             joinColumns = @JoinColumn(name = "employee_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -42,7 +42,7 @@ public class UserEmployee implements UserDetails {
     @OneToOne(cascade = CascadeType.ALL)
     private MasterEntity master;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private WorkerEntity worker;
 
     @Override

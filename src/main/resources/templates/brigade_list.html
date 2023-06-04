@@ -15,7 +15,6 @@
         <div class="input-group mb-3 mt-3">
             <input type="text" class="form-control" name="foundWorkerSurname" placeholder="Enter worker surname"
                    required pattern=".*\S+.*">
-            <input type="hidden" name="masterId" th:value="${param.masterId}">
             <button class="btn btn-primary" type="submit">Search</button>
         </div>
     </form>
@@ -49,13 +48,11 @@
             <td>
                 <div style="display: flex; gap: 10px;">
                     <form method="get" th:action="@{/workers/update_worker}" style="display: inline;">
-                        <input type="hidden" name="masterId" th:value="${param.masterId}">
                         <input type="hidden" name="workerId" th:value="${worker.id}">
                         <button type="submit" class="btn btn-warning ml-2" style="flex: 1; margin-right: 5px;">Update
                         </button>
                     </form>
                     <form method="post" th:action="@{/workers/delete_worker}" style="display: inline;">
-                        <input type="hidden" name="masterId" th:value="${param.masterId}">
                         <input type="hidden" name="workerId" th:value="${worker.id}">
                         <button type="submit" class="btn btn-danger ml-2" style="flex: 1;">Delete</button>
                     </form>
@@ -71,7 +68,8 @@
 
 <div class="d-grid gap-2 col-4 mx-auto">
     <a class="btn btn-primary" href="/masters/choose_master">Main page</a>
-    <a class="btn btn-primary" th:href="@{/workplaces/get_all_workplaces(masterId=${param.masterId})}">Set positions</a>
+    <a class="btn btn-primary" th:href="@{/workplaces/get_all_workplaces}">Set positions</a>
+    <a th:href="@{${#httpServletRequest.getHeader('Referer')}}" class="btn btn-primary">Back</a>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"

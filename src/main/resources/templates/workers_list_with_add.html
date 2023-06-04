@@ -31,7 +31,6 @@
       <td th:text="${worker.master.surname}"></td>
       <td>
         <form method="post" th:action="@{/workplaces/add_worker_to_workplace}">
-          <input type="hidden" name="masterId" th:value="${param.masterId}">
           <input type="hidden" name="workerId" th:value="${worker.id}" />
           <input type="hidden" name="workplaceId" th:value="${param.workplaceId}" />
           <button type="submit" class="btn btn-primary">Add to the workplace</button>
@@ -43,7 +42,6 @@
 </div>
 
 <form action="#" th:action="@{/workplaces/get_all_workplaces}" method="get" class="text-center">
-  <input type="hidden" th:value="${param.masterId}" name="masterId">
   <button type="submit" class="btn btn-primary col-4">Back</button>
 </form>
 

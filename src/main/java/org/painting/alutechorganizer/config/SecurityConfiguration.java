@@ -33,17 +33,28 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/registration").not().fullyAuthenticated()
-                .antMatchers("/masters/**").hasRole("MASTER")
+                .antMatchers("/workplaces/get_all_workplaces").hasAnyRole("WORKER", "MASTER")
+                .antMatchers("/**").hasRole("MASTER")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")
                 .defaultSuccessUrl("/masters/choose_master")
+                .successHandler((request, response, authentication) -> {
+
+                    if (authentication.getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_WORKER"))) {
+                        response.sendRedirect("/workplaces/get_all_workplaces");
+                    } else {
+                        response.sendRedirect("/masters/choose_master");
+                    }
+
+                })
                 .permitAll()
                 .and()
                 .logout()
+                .logoutUrl("/logout")
                 .permitAll()
-                .logoutSuccessUrl("/");
+                .logoutSuccessUrl("/login");
 
     }
 

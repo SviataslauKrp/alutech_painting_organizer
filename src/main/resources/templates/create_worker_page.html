@@ -9,33 +9,52 @@
 <body>
 <div class="container">
     <h1>Create Worker Form</h1>
-    <form action="#" th:action="@{/workers/create_worker}" th:object="${worker}" method="post">
-        <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" class="form-control" th:field="*{name}" id="name" required pattern=".*\S+.*">
-        </div>
-        <div class="form-group">
-            <label for="surname">Surname</label>
-            <input type="text" class="form-control" th:field="*{surname}" id="surname" required pattern=".*\S+.*">
-        </div>
-        <div class="form-group">
-            <label for="startWorking">Start Working</label>
-            <input type="date" class="form-control" th:field="*{startWorking}" id="startWorking" required>
-        </div>
-        <div class="form-group has-error">
-            <select class="form-control" style="margin-top: 40px;" th:field="*{profession}" required>
-                <option value="">Choose profession</option>
-                <option th:each="profession : ${T(org.painting.alutechorganizer.domain.Profession).values()}"
-                        th:value="${profession}" th:text="${profession}"></option>
-            </select>
-
-        </div>
+    <form action="#" th:action="@{/registration/create_worker}" th:object="${userForm}" method="post">
 
         <div class="form-group">
-            <select class="form-control" id="masterId" name="masterId" required>
-                <option value="">Choose master</option>
-                <option th:each="master : ${allMasters}" th:value="${master.id}" th:text="${master.surname}"></option>
-            </select>
+            <label for="username">Email:</label>
+            <input type="email" class="form-control" id="username" name="username" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" class="form-control" id="password" name="password" required
+                   pattern="^[a-zA-Z0-9]{4}$">
+        </div>
+        <div class="form-group">
+            <label for="password">Confirm password:</label>
+            <input type="password" class="form-control" id="passwordConfirm" name="passwordConfirm" required
+                   pattern="^[a-zA-Z0-9]{4}$">
+        </div>
+
+        <div th:object="${worker}">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" th:field="*{name}" id="name" required pattern=".*\S+.*">
+            </div>
+            <div class="form-group">
+                <label for="surname">Surname</label>
+                <input type="text" class="form-control" th:field="*{surname}" id="surname" required pattern=".*\S+.*">
+            </div>
+            <div class="form-group">
+                <label for="startWorking">Start Working</label>
+                <input type="date" class="form-control" th:field="*{startWorking}" id="startWorking" required>
+            </div>
+            <div class="form-group has-error">
+                <select class="form-control" style="margin-top: 40px;" th:field="*{profession}" required>
+                    <option value="">Choose profession</option>
+                    <option th:each="profession : ${T(org.painting.alutechorganizer.domain.Profession).values()}"
+                            th:value="${profession}" th:text="${profession}"></option>
+                </select>
+
+            </div>
+
+            <div class="form-group">
+                <select class="form-control" id="masterId" name="masterId" required>
+                    <option value="">Choose master</option>
+                    <option th:each="master : ${allMasters}" th:value="${master.id}"
+                            th:text="${master.surname}"></option>
+                </select>
+            </div>
         </div>
 
         <button type="submit" class="btn btn-primary btn-block" style="margin-top: 250px;">Create</button>

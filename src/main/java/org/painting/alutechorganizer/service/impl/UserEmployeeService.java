@@ -5,11 +5,15 @@ import org.painting.alutechorganizer.config.SecurityConfiguration;
 import org.painting.alutechorganizer.domain.MasterEntity;
 import org.painting.alutechorganizer.domain.Role;
 import org.painting.alutechorganizer.domain.UserEmployee;
+import org.painting.alutechorganizer.domain.WorkerEntity;
 import org.painting.alutechorganizer.dto.MasterDto;
+import org.painting.alutechorganizer.dto.WorkerDto;
 import org.painting.alutechorganizer.mapper.MasterMapper;
+import org.painting.alutechorganizer.mapper.WorkerMapper;
 import org.painting.alutechorganizer.repository.MasterRepository;
 import org.painting.alutechorganizer.repository.RoleRepository;
 import org.painting.alutechorganizer.repository.UserEmployeeRepository;
+import org.painting.alutechorganizer.service.WorkerService;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,6 +22,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.Optional;
@@ -28,10 +33,9 @@ import java.util.Optional;
 public class UserEmployeeService implements UserDetailsService {
 
     private final UserEmployeeRepository userRepository;
-    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final MasterMapper masterMapper;
-    private final MasterRepository masterRepository;
+    private final WorkerService workerService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -56,13 +60,19 @@ public class UserEmployeeService implements UserDetailsService {
     }
 
     @Transactional
-    public boolean deleteUser(Integer userId) {
+    public boolean saveUser(UserEmployee user, WorkerDto workerDto, Integer masterId) {
 
-        Optional<UserEmployee> userFromDb = userRepository.findById(userId);
+        Optional<UserEmployee> userFromDb = userRepository.findByUsername(user.getUsername());
         if (userFromDb.isPresent()) {
-            userRepository.deleteById(userId);
-            return true;
+            return false;
         }
-        return false;
+
+        WorkerEntity workerEntity = workerService.setToMaster(workerDto, masterId);
+        user.setWorker(workerEntity);
+        user.setRoles(Collections.singleton(new Role("ROLE_WORKER")));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+        return true;
     }
+
 }
