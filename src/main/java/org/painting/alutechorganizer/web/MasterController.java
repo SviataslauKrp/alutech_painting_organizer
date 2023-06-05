@@ -1,18 +1,20 @@
 package org.painting.alutechorganizer.web;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.painting.alutechorganizer.domain.UserEmployee;
 import org.painting.alutechorganizer.dto.MasterDto;
+import org.painting.alutechorganizer.exc.MasterException;
+import org.painting.alutechorganizer.exc.WorkerException;
 import org.painting.alutechorganizer.service.MasterService;
+import org.painting.alutechorganizer.service.impl.UserEmployeeService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 
@@ -21,25 +23,8 @@ import java.util.List;
 public class MasterController {
 
     private final MasterService masterService;
+    private final UserEmployeeService userService;
 
-
-    //create
-//    @GetMapping("/create_master")
-//    public String getCreatingForm(@ModelAttribute(name = "master") MasterDto master) {
-//        return "create_master_page";
-//    }
-
-
-//    @PostMapping("/create_master")
-//    public String saveMaster(@Valid MasterDto master,
-//                             BindingResult bindingResult) {
-//        if (bindingResult.hasErrors()) {
-//            throw new MasterException("The master hasn't been created");
-//        }
-//        masterService.saveMaster(master);
-//        return "redirect:/masters/choose_master";
-//
-//    }
 
     //read
 
@@ -63,11 +48,15 @@ public class MasterController {
     public ModelAndView getUpdatePage() {
         Integer masterId = getMasterId();
         MasterDto master = masterService.getMasterById(masterId);
-        return new ModelAndView("update_master_page", "master", master);
+        UserEmployee principal = (UserEmployee) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        ModelAndView modelAndView = new ModelAndView("update_master_page");
+        modelAndView.addAllObjects(Map.of("master", master,
+                "principal", principal));
+        return modelAndView;
     }
 
     @PostMapping("/update_master")
-    public String updateMasterById(MasterDto master) {
+    public String updateMasterById(@ModelAttribute(name = "master") MasterDto master) {
         Integer masterId = getMasterId();
         masterService.updateMasterById(master, masterId);
         return "redirect:/masters/choose_master";
@@ -79,14 +68,9 @@ public class MasterController {
     public String deleteMasterById() {
         Integer masterId = getMasterId();
         masterService.deleteMasterById(masterId);
+        SecurityContextHolder.clearContext();
         return "redirect:/login";
     }
-
-//    @PostMapping("/add_worker_to_master")
-//    public void addWorkerToMaster(@RequestParam Integer workerId,
-//                                  @RequestParam Integer masterId) {
-//        masterService.addWorkerToMaster(workerId, masterId);
-//    }
 
     static Integer getMasterId() {
         UserEmployee principal = (UserEmployee) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

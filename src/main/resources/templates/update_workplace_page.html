@@ -29,7 +29,7 @@
     <form th:action="@{/workplaces/update_workplace}" th:object="${workplace}" method="post">
         <div class="form-group">
             <label for="name" class="form-label">Name</label>
-            <input type="text" class="form-control" id="name" th:field="*{name}" >
+            <input type="text" class="form-control" id="name" th:field="*{name}">
         </div>
         <input type="hidden" th:value="${param.masterId}" name="masterId">
         <input type="hidden" th:value="${workplace.id}" name="workplaceId">

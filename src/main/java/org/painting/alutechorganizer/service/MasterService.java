@@ -1,7 +1,7 @@
 package org.painting.alutechorganizer.service;
 
+import org.painting.alutechorganizer.domain.UserEmployee;
 import org.painting.alutechorganizer.dto.MasterDto;
-import org.painting.alutechorganizer.exc.MasterException;
 
 import java.util.List;
 

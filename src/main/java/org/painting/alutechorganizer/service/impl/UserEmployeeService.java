@@ -1,7 +1,6 @@
 package org.painting.alutechorganizer.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.painting.alutechorganizer.config.SecurityConfiguration;
 import org.painting.alutechorganizer.domain.MasterEntity;
 import org.painting.alutechorganizer.domain.Role;
 import org.painting.alutechorganizer.domain.UserEmployee;
@@ -9,20 +8,15 @@ import org.painting.alutechorganizer.domain.WorkerEntity;
 import org.painting.alutechorganizer.dto.MasterDto;
 import org.painting.alutechorganizer.dto.WorkerDto;
 import org.painting.alutechorganizer.mapper.MasterMapper;
-import org.painting.alutechorganizer.mapper.WorkerMapper;
-import org.painting.alutechorganizer.repository.MasterRepository;
-import org.painting.alutechorganizer.repository.RoleRepository;
 import org.painting.alutechorganizer.repository.UserEmployeeRepository;
 import org.painting.alutechorganizer.service.WorkerService;
-import org.springframework.context.annotation.DependsOn;
-import org.springframework.context.annotation.Lazy;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.Optional;
@@ -51,9 +45,10 @@ public class UserEmployeeService implements UserDetailsService {
             return false;
         }
         MasterEntity masterEntity = masterMapper.toMasterEntity(masterDto);
-
+        Role role = new Role("ROLE_MASTER");
+        role.setUser(user);
         user.setMaster(masterEntity);
-        user.setRoles(Collections.singleton(new Role("ROLE_MASTER")));
+        user.setRoles(Collections.singleton(role));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return true;
@@ -66,13 +61,23 @@ public class UserEmployeeService implements UserDetailsService {
         if (userFromDb.isPresent()) {
             return false;
         }
-
+        Role role = new Role("ROLE_WORKER");
+        role.setUser(user);
         WorkerEntity workerEntity = workerService.setToMaster(workerDto, masterId);
         user.setWorker(workerEntity);
-        user.setRoles(Collections.singleton(new Role("ROLE_WORKER")));
+        user.setRoles(Collections.singleton(role));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return true;
+    }
+
+    @Transactional
+    public void updateUser(UserEmployee newUser) {
+        UserEmployee oldUser = (UserEmployee) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (newUser.getPassword() != null) {
+            oldUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+        }
+        userRepository.save(oldUser);
     }
 
 }

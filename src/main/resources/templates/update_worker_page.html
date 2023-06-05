@@ -54,13 +54,11 @@
         </div>
 
         <input type="hidden" th:value="${worker.id}" name="workerId">
-        <input type="hidden" th:value="${param.masterId}" name="masterId">
         <button type="submit" class="btn btn-warning">Update worker</button>
     </form>
 
     <div class="text-center">
         <form method="get" action="/workers/get_workers_by_master_id">
-            <input type="hidden" th:name="masterId" th:value="${param.masterId}">
             <button type="submit" class="btn btn-primary col-6">Brigade list</button>
         </form>
     </div>

@@ -32,6 +32,7 @@ public class MasterEntity {
     private List<WorkplaceEntity> workplaces;
 
     @OneToOne(mappedBy = "master")
+    @Transient
     private UserEmployee user;
 
 

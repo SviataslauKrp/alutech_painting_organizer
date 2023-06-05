@@ -1,32 +1,27 @@
 package org.painting.alutechorganizer.web;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.painting.alutechorganizer.domain.MasterEntity;
 import org.painting.alutechorganizer.domain.UserEmployee;
-import org.painting.alutechorganizer.dto.MasterDto;
 import org.painting.alutechorganizer.dto.WorkerDto;
 import org.painting.alutechorganizer.dto.WorkplaceDto;
 import org.painting.alutechorganizer.exc.MasterException;
-import org.painting.alutechorganizer.exc.WorkerException;
 import org.painting.alutechorganizer.service.MasterService;
 import org.painting.alutechorganizer.service.WorkerService;
 import org.painting.alutechorganizer.service.WorkplaceService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static org.painting.alutechorganizer.web.MasterController.*;
+import static org.painting.alutechorganizer.web.MasterController.getMasterId;
 
 @RequiredArgsConstructor
 
@@ -76,19 +71,18 @@ public class WorkerController {
     //update
     @GetMapping("/update_worker")
     public ModelAndView getUpdatePage(@RequestParam(name = "workerId") Integer workerId) {
-        Integer masterId = getMasterId();
         WorkerDto worker = workerService.getWorkerById(workerId);
-        MasterDto masterById = masterService.getMasterById(masterId);
-
-        ModelAndView modelAndView = new ModelAndView("update_worker_page");
-        modelAndView.addAllObjects(Map.of("worker", worker,
-                "master", masterById));
-        return modelAndView;
+        return new ModelAndView("update_worker_page", "worker", worker);
     }
 
     @PostMapping("/update_worker")
     public String updateWorkerById(WorkerDto newWorkerVersion,
                                    @RequestParam(name = "workerId") Integer workerId) {
+        Integer masterId = getMasterId();
+        WorkerDto worker = workerService.getWorkerById(workerId);
+        if (!Objects.equals(masterId, worker.getMaster().getId())) {
+            throw new MasterException("Cheating");
+        }
         workerService.updateWorker(newWorkerVersion, workerId);
         return "redirect:/workers/get_workers_by_master_id";
     }
@@ -101,8 +95,6 @@ public class WorkerController {
     }
 
 
-
-
     @GetMapping("/transfer_worker_to_another_master")
     public ModelAndView getTransferPage() {
         Integer masterId = getMasterId();
@@ -111,9 +103,15 @@ public class WorkerController {
     }
 
     @PostMapping("/transfer_worker_to_another_master")
-    public String transferWorkerToAnotherMaster(@RequestParam(name = "newMasterId") Integer masterId,
+    public String transferWorkerToAnotherMaster(@RequestParam(name = "newMasterId") Integer newMasterId,
                                                 @RequestParam(name = "workerId") Integer workerId) {
-        workerService.setNewMasterToWorker(workerId, masterId);
+        Integer masterId = getMasterId();
+        WorkerDto worker = workerService.getWorkerById(workerId);
+
+        if (!Objects.equals(masterId, worker.getMaster().getId())) {
+            throw new MasterException("Cheating");
+        }
+        workerService.setToMaster(worker, newMasterId);
         return "redirect:/workers/get_workers_by_master_id";
     }
 

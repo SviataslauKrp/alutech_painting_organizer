@@ -2,12 +2,14 @@ package org.painting.alutechorganizer.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.painting.alutechorganizer.domain.MasterEntity;
+import org.painting.alutechorganizer.domain.UserEmployee;
 import org.painting.alutechorganizer.domain.WorkerEntity;
 import org.painting.alutechorganizer.dto.WorkerDto;
 import org.painting.alutechorganizer.exc.MasterException;
 import org.painting.alutechorganizer.exc.WorkerException;
 import org.painting.alutechorganizer.mapper.WorkerMapper;
 import org.painting.alutechorganizer.repository.MasterRepository;
+import org.painting.alutechorganizer.repository.UserEmployeeRepository;
 import org.painting.alutechorganizer.repository.WorkerRepository;
 import org.painting.alutechorganizer.service.WorkerService;
 import org.springframework.stereotype.Service;
@@ -23,14 +25,16 @@ public class WorkerServiceImpl implements WorkerService {
     private final WorkerRepository workerRepository;
     private final MasterRepository masterRepository;
     private final WorkerMapper mapper;
+    private final UserEmployeeRepository userRepository;
 
-    @Override
-    public WorkerEntity setToMaster(WorkerDto workerDto, Integer masterId) {
-        MasterEntity masterEntity = masterRepository.findById(masterId).orElseThrow(() -> new MasterException("The master isn't found"));
-        WorkerEntity workerEntity = mapper.toWorkerEntity(workerDto);
-        masterEntity.addWorker(workerEntity);
-        return workerEntity;
-    }
+//    @Transactional
+//    @Override
+//    public WorkerEntity setToMaster(WorkerDto workerDto, Integer masterId) {
+//        MasterEntity masterEntity = masterRepository.findById(masterId).orElseThrow(() -> new MasterException("The master isn't found"));
+//        WorkerEntity workerEntity = mapper.toWorkerEntity(workerDto);
+//        masterEntity.addWorker(workerEntity);
+//        return workerEntity;
+//    }
 
     @Override
     public List<WorkerDto> getAllWorkers() {
@@ -51,7 +55,10 @@ public class WorkerServiceImpl implements WorkerService {
     @Transactional
     @Override
     public void deleteWorkerById(Integer id) {
-        workerRepository.deleteById(id);
+        WorkerEntity worker = workerRepository.findById(id).orElseThrow(() -> new WorkerException("The worker isn't found"));
+        UserEmployee user = worker.getUser();
+        userRepository.delete(user);
+
     }
 
     @Transactional
@@ -79,11 +86,11 @@ public class WorkerServiceImpl implements WorkerService {
 
     @Transactional
     @Override
-    public void setNewMasterToWorker(Integer workerId, Integer masterId) {
+    public WorkerEntity setToMaster(WorkerDto workerDto, Integer masterId) {
         MasterEntity newMaster = masterRepository.findById(masterId).orElseThrow(() -> new MasterException("The master isn't found"));
-        WorkerEntity worker = workerRepository.findById(workerId).orElseThrow(() -> new WorkerException("The worker isn't found"));
-        newMaster.addWorker(worker);
-
+        WorkerEntity workerEntity = workerRepository.findById(workerDto.getId()).orElseThrow(() -> new WorkerException("The worker isn't found"));
+        newMaster.addWorker(workerEntity);
+        return workerEntity;
     }
 
     @Override

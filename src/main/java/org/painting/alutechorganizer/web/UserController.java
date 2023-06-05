@@ -8,28 +8,29 @@ import org.painting.alutechorganizer.dto.WorkerDto;
 import org.painting.alutechorganizer.exc.MasterException;
 import org.painting.alutechorganizer.exc.WorkerException;
 import org.painting.alutechorganizer.service.MasterService;
-import org.painting.alutechorganizer.service.WorkerService;
 import org.painting.alutechorganizer.service.impl.UserEmployeeService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-
 import java.util.List;
 
-import static org.painting.alutechorganizer.web.MasterController.*;
+import static org.painting.alutechorganizer.web.MasterController.getMasterId;
 
 @RequiredArgsConstructor
 
 @Controller
 @RequestMapping("/registration")
-public class RegistrationController {
+public class UserController {
 
     private final UserEmployeeService userService;
-    private final WorkerService workerService;
     private final MasterService masterService;
 
     @GetMapping
@@ -82,5 +83,16 @@ public class RegistrationController {
             throw new WorkerException("There is a worker with such name already");
         }
         return "redirect:/workers/all_workers";
+    }
+
+    @PostMapping("/update_user")
+    public String updateUser(@ModelAttribute(name = "principal") UserEmployee user) {
+
+        if (!StringUtils.equals(user.getPassword(), user.getPasswordConfirm())) {
+            throw new MasterException("The passwords aren't equals");
+        }
+        userService.updateUser(user);
+        SecurityContextHolder.clearContext();
+        return "redirect:/login";
     }
 }

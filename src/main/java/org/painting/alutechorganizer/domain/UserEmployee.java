@@ -1,12 +1,10 @@
 package org.painting.alutechorganizer.domain;
 
 import lombok.*;
-import org.hibernate.annotations.Cascade;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -29,14 +27,12 @@ public class UserEmployee implements UserDetails {
 
     @NotNull
     private String username;
-    @Size(min = 4) @NotBlank
+    @Size(min = 4)
+    @NotBlank
     private String password;
     @Transient
     private String passwordConfirm;
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, fetch = FetchType.EAGER)
-    @JoinTable(name = "employees_roles",
-            joinColumns = @JoinColumn(name = "employee_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, fetch = FetchType.EAGER, mappedBy = "user")
     private Set<Role> roles;
 
     @OneToOne(cascade = CascadeType.ALL)

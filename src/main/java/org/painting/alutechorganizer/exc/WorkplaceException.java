@@ -1,6 +1,5 @@
 package org.painting.alutechorganizer.exc;
 
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor

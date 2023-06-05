@@ -1,6 +1,5 @@
 package org.painting.alutechorganizer.repository;
 
-import org.painting.alutechorganizer.domain.WorkerEntity;
 import org.painting.alutechorganizer.domain.WorkplaceEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 

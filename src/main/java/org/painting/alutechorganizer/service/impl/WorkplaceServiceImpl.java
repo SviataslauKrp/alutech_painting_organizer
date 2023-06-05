@@ -4,14 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.painting.alutechorganizer.domain.MasterEntity;
 import org.painting.alutechorganizer.domain.WorkerEntity;
 import org.painting.alutechorganizer.domain.WorkplaceEntity;
-import org.painting.alutechorganizer.dto.MasterDto;
 import org.painting.alutechorganizer.dto.WorkplaceDto;
-import org.painting.alutechorganizer.exc.*;
+import org.painting.alutechorganizer.exc.MasterException;
+import org.painting.alutechorganizer.exc.WorkerException;
+import org.painting.alutechorganizer.exc.WorkplaceException;
 import org.painting.alutechorganizer.mapper.WorkplaceMapper;
 import org.painting.alutechorganizer.repository.MasterRepository;
 import org.painting.alutechorganizer.repository.WorkerRepository;
 import org.painting.alutechorganizer.repository.WorkplaceRepository;
-import org.painting.alutechorganizer.service.MasterService;
 import org.painting.alutechorganizer.service.WorkplaceService;
 import org.springframework.stereotype.Service;
 
@@ -78,12 +78,12 @@ public class WorkplaceServiceImpl implements WorkplaceService {
     public void addWorkerToWorkplace(Integer workerId, Integer workplaceId) {
 
         WorkplaceEntity workplaceEntity = workplaceRepository.findById(workplaceId).orElseThrow(WorkplaceException::new);
-        WorkerEntity workerEntity = workerRepository.findById(workerId).orElseThrow(WorkerNotFoundException::new);
+        WorkerEntity workerEntity = workerRepository.findById(workerId).orElseThrow(WorkerException::new);
 
         if (workerEntity.getWorkplace() == null) {
             workplaceEntity.addWorker(workerEntity);
         } else {
-            throw new WorkerIsNotAvailableException();
+            throw new WorkerException();
         }
 
     }
@@ -93,12 +93,12 @@ public class WorkplaceServiceImpl implements WorkplaceService {
     public void removeWorkerFromWorkplace(Integer workerId, Integer workplaceId) {
 
         WorkplaceEntity workplaceEntity = workplaceRepository.findById(workplaceId).orElseThrow(WorkplaceException::new);
-        WorkerEntity workerEntity = workerRepository.findById(workerId).orElseThrow(WorkerNotFoundException::new);
+        WorkerEntity workerEntity = workerRepository.findById(workerId).orElseThrow(WorkerException::new);
 
         if (workplaceEntity.getWorkers().contains(workerEntity)) {
             workplaceEntity.removeWorker(workerEntity);
         } else {
-            throw new WorkerNotFoundException();
+            throw new WorkerException();
         }
 
     }

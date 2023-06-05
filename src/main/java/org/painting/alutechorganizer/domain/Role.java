@@ -7,7 +7,6 @@ import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -22,9 +21,9 @@ public class Role implements GrantedAuthority {
     private Integer id;
     @NotBlank
     private String name;
-    @Transient
-    @ManyToMany(mappedBy = "roles")
-    private Set<UserEmployee> users;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserEmployee user;
 
     public Role(String name) {
         this.name = name;

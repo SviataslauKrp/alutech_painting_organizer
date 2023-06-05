@@ -13,7 +13,7 @@
 <body>
 
 <div class="container">
-    <h1 class="mt-3">Update Worker</h1>
+    <h1 class="mt-3">Update Master</h1>
 
     <form action="/masters/update_master" th:object="${master}" method="post">
 
@@ -26,9 +26,23 @@
             <label for="surname" class="form-label">Surname</label>
             <input type="text" class="form-control" id="surname" th:field="*{surname}" required pattern=".*\S+.*">
         </div>
+        <button type="submit" class="btn btn-warning">Update master</button>
+    </form>
+
+    <form action="/registration/update_user" th:object="${principal}" method="post">
+
+        <div class="mb-3">
+            <label for="newPassword" class="form-label">New password</label>
+            <input type="password" class="form-control" id="newPassword" th:field="*{password}" required pattern=".*\S+.*">
+        </div>
+
+        <div class="mb-3">
+            <label for="newPasswordConfirm">Confirm new password:</label>
+            <input type="password" class="form-control" id="newPasswordConfirm" th:field="*{passwordConfirm}" required pattern=".*\S+.*">
+        </div>
 
         <input type="hidden" th:value="${param.masterId}" name="masterId">
-        <button type="submit" class="btn btn-warning">Update master</button>
+        <button type="submit" class="btn btn-warning">Change password</button>
     </form>
 
 </div>

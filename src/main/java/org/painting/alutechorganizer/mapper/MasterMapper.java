@@ -8,7 +8,6 @@ import org.painting.alutechorganizer.dto.MasterDto;
 import org.painting.alutechorganizer.dto.WorkerDto;
 import org.painting.alutechorganizer.dto.WorkplaceDto;
 
-import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 @Mapper(componentModel = "spring",
@@ -33,7 +32,7 @@ public interface MasterMapper {
 
     List<MasterDto> toListDtos(List<MasterEntity> entities);
 
-
+    @Mapping(target = "user", ignore = true)
     void updateMasterFromDto(MasterDto masterDto, @MappingTarget MasterEntity masterEntity);
 
 }

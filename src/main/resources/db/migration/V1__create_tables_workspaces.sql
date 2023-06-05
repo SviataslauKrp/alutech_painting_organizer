@@ -21,7 +21,6 @@ CREATE TABLE workers
     workplace_id  INTEGER,
     profession    VARCHAR(255) NOT NULL,
     master_id     INTEGER      NOT NULL,
-    auth_id       INTEGER,
     note          VARCHAR(255),
     is_available  BOOLEAN DEFAULT TRUE
 );
@@ -38,15 +37,10 @@ CREATE TABLE employees
 CREATE TABLE roles
 (
     id   SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL
+    name VARCHAR(255) NOT NULL,
+    user_id INTEGER NOT NULL
 );
 
-
-CREATE TABLE employees_roles
-(
-    employee_id INTEGER,
-    role_id     INTEGER
-);
 
 
 

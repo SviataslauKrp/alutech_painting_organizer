@@ -1,6 +1,5 @@
 package org.painting.alutechorganizer.mapper;
 
-import jdk.jfr.Name;
 import org.mapstruct.*;
 import org.painting.alutechorganizer.domain.MasterEntity;
 import org.painting.alutechorganizer.domain.WorkerEntity;
@@ -8,7 +7,6 @@ import org.painting.alutechorganizer.domain.WorkplaceEntity;
 import org.painting.alutechorganizer.dto.MasterDto;
 import org.painting.alutechorganizer.dto.WorkerDto;
 import org.painting.alutechorganizer.dto.WorkplaceDto;
-import org.painting.alutechorganizer.exc.MasterException;
 
 import java.util.List;
 

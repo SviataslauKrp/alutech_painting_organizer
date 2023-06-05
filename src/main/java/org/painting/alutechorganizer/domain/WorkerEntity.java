@@ -39,6 +39,7 @@ public class WorkerEntity {
     private MasterEntity master;
 
     @OneToOne(mappedBy = "worker")
+    @Transient
     private UserEmployee user;
 
     private String note;
