@@ -1,11 +1,8 @@
 package org.painting.alutechorganizer.web;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.painting.alutechorganizer.domain.UserEmployee;
 import org.painting.alutechorganizer.dto.MasterDto;
-import org.painting.alutechorganizer.exc.MasterException;
-import org.painting.alutechorganizer.exc.WorkerException;
 import org.painting.alutechorganizer.service.MasterService;
 import org.painting.alutechorganizer.service.impl.UserEmployeeService;
 import org.springframework.security.core.context.SecurityContextHolder;
