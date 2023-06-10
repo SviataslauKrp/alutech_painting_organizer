@@ -78,10 +78,8 @@ public class WorkerServiceImpl implements WorkerService {
 
     @Override
     public List<WorkerDto> getWorkersByMasterId(Integer masterId) {
-
         List<WorkerEntity> workersByMasterId = workerRepository.findByMasterId(masterId);
         return mapper.toListDtos(workersByMasterId);
-
     }
 
     @Transactional

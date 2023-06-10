@@ -37,17 +37,13 @@ public class MasterEntity {
 
 
     public void addWorker(WorkerEntity worker) {
-
         workers.add(worker);
         worker.setMaster(this);
         worker.setWorkplace(null);
-
     }
 
     public void addWorkplace(WorkplaceEntity workplace) {
-
         workplaces.add(workplace);
         workplace.setMaster(this);
-
     }
 }

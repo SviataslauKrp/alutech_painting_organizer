@@ -2,7 +2,10 @@ package org.painting.alutechorganizer.service.impl;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.*;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.painting.alutechorganizer.domain.MasterEntity;
 import org.painting.alutechorganizer.domain.UserEmployee;
 import org.painting.alutechorganizer.domain.WorkerEntity;
@@ -11,14 +14,13 @@ import org.painting.alutechorganizer.exc.MasterException;
 import org.painting.alutechorganizer.mapper.MasterMapper;
 import org.painting.alutechorganizer.repository.MasterRepository;
 import org.painting.alutechorganizer.repository.UserEmployeeRepository;
-import org.painting.alutechorganizer.repository.WorkerRepository;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 class MasterServiceImplTest {

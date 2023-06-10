@@ -30,12 +30,10 @@ public class WorkplaceServiceImpl implements WorkplaceService {
 
     @Override
     public void saveWorkplace(WorkplaceDto workplace, Integer masterId) {
-
-        MasterEntity master = masterRepository.findById(masterId).orElseThrow(MasterException::new);
+        MasterEntity master = masterRepository.findById(masterId).orElseThrow(() -> new MasterException("The master isn't found"));
         WorkplaceEntity workplaceEntity = workplaceMapper.toWorkplaceEntity(workplace);
         master.addWorkplace(workplaceEntity);
         workplaceRepository.save(workplaceEntity);
-
     }
 
     @Override
@@ -57,26 +55,21 @@ public class WorkplaceServiceImpl implements WorkplaceService {
     @Transactional
     @Override
     public void deleteWorkplaceById(Integer id) {
-
         WorkplaceEntity workplaceEntity = workplaceRepository.findById(id).orElseThrow(WorkplaceException::new);
         workplaceEntity.getWorkers().forEach(WorkerEntity::leaveWorkplace);
         workplaceRepository.deleteById(id);
-
     }
 
     @Transactional
     @Override
     public void updateWorkplaceById(WorkplaceDto workplaceDto, Integer id) {
-
         WorkplaceEntity workplaceEntity = workplaceRepository.findById(id).orElseThrow(WorkplaceException::new);
         workplaceMapper.updateWorkplaceFromDto(workplaceDto, workplaceEntity);
-
     }
 
     @Transactional
     @Override
     public void addWorkerToWorkplace(Integer workerId, Integer workplaceId) {
-
         WorkplaceEntity workplaceEntity = workplaceRepository.findById(workplaceId).orElseThrow(WorkplaceException::new);
         WorkerEntity workerEntity = workerRepository.findById(workerId).orElseThrow(WorkerException::new);
 
@@ -85,13 +78,11 @@ public class WorkplaceServiceImpl implements WorkplaceService {
         } else {
             throw new WorkerException();
         }
-
     }
 
     @Transactional
     @Override
     public void removeWorkerFromWorkplace(Integer workerId, Integer workplaceId) {
-
         WorkplaceEntity workplaceEntity = workplaceRepository.findById(workplaceId).orElseThrow(WorkplaceException::new);
         WorkerEntity workerEntity = workerRepository.findById(workerId).orElseThrow(WorkerException::new);
 
@@ -100,14 +91,11 @@ public class WorkplaceServiceImpl implements WorkplaceService {
         } else {
             throw new WorkerException();
         }
-
     }
 
     @Override
     public List<WorkplaceDto> getWorkplacesByMasterId(Integer masterId) {
-
         return workplaceMapper.toListDtos(workplaceRepository.findByMasterId(masterId));
-
     }
 
 }

@@ -27,10 +27,8 @@ public class MasterServiceImpl implements MasterService {
 
     @Override
     public void saveMaster(MasterDto master) {
-
         MasterEntity masterEntity = masterMapper.toMasterEntity(master);
         masterRepository.save(masterEntity);
-
     }
 
     @Transactional

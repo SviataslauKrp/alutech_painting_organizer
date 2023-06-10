@@ -1,6 +1,7 @@
 package org.painting.alutechorganizer.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.painting.alutechorganizer.domain.MasterEntity;
 import org.painting.alutechorganizer.domain.Role;
 import org.painting.alutechorganizer.domain.UserEmployee;
@@ -34,12 +35,10 @@ public class UserEmployeeService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("The user hasn't been found"));
-
     }
 
     @Transactional
     public boolean saveUser(UserEmployee user, MasterDto masterDto) {
-
         Optional<UserEmployee> userFromDb = userRepository.findByUsername(user.getUsername());
         if (userFromDb.isPresent()) {
             return false;
@@ -74,10 +73,10 @@ public class UserEmployeeService implements UserDetailsService {
     @Transactional
     public void updateUser(UserEmployee newUser) {
         UserEmployee oldUser = (UserEmployee) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (newUser.getPassword() != null) {
+        if (StringUtils.isNotBlank(newUser.getPassword()) && !StringUtils.equals(newUser.getPassword(), oldUser.getPassword())) {
             oldUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+            userRepository.save(oldUser);
         }
-        userRepository.save(oldUser);
     }
 
 }

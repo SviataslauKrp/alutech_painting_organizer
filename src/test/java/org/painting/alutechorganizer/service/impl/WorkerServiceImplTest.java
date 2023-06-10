@@ -13,16 +13,17 @@ import org.painting.alutechorganizer.domain.WorkerEntity;
 import org.painting.alutechorganizer.dto.WorkerDto;
 import org.painting.alutechorganizer.exc.WorkerException;
 import org.painting.alutechorganizer.mapper.WorkerMapper;
+import org.painting.alutechorganizer.repository.MasterRepository;
 import org.painting.alutechorganizer.repository.UserEmployeeRepository;
 import org.painting.alutechorganizer.repository.WorkerRepository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class WorkerServiceImplTest {
@@ -33,6 +34,8 @@ class WorkerServiceImplTest {
     private WorkerMapper mapper;
     @Mock
     UserEmployeeRepository userRepository;
+    @Mock
+    MasterRepository masterRepository;
     @InjectMocks
     private WorkerServiceImpl service;
 
@@ -182,6 +185,36 @@ class WorkerServiceImplTest {
 
         //then
         assertEquals(testWorkerDto, worker);
+    }
+
+    @Test
+    void testGetWorkersByMasterId() {
+        //given
+        Integer masterId = testMaster.getId();
+        when(workerRepository.findByMasterId(masterId)).thenReturn(List.of(testWorkerEntity));
+        when(mapper.toListDtos(List.of(testWorkerEntity))).thenReturn(List.of(testWorkerDto));
+
+        //when
+        List<WorkerDto> workers = service.getWorkersByMasterId(masterId);
+
+        //then
+        verify(mapper, times(1)).toListDtos(List.of(testWorkerEntity));
+        assertEquals(1, workers.size());
+        assertEquals(testWorkerDto, workers.get(0));
+    }
+
+    @Test
+    void setToMaster() {
+        //given
+        when(workerRepository.findById(testWorkerEntity.getId())).thenReturn(Optional.of(testWorkerEntity));
+        when(masterRepository.findById(testMaster.getId())).thenReturn(Optional.of(testMaster));
+
+        //when
+        testMaster.addWorker(testWorkerEntity);
+
+        //then
+        assertTrue(testMaster.getWorkers().contains(testWorkerEntity));
+        assertEquals(testWorkerEntity.getMaster(), testMaster);
     }
 
 }
