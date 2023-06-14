@@ -1,12 +1,11 @@
 package org.painting.alutechorganizer.service;
 
-import org.painting.alutechorganizer.domain.UserEmployee;
 import org.painting.alutechorganizer.dto.MasterDto;
 
 import java.util.List;
 
 public interface MasterService {
-    public void saveMaster(MasterDto master);
+    void saveMaster(MasterDto master);
 
     void deleteMasterById(Integer id);
 

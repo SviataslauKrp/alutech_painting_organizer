@@ -17,9 +17,7 @@ import java.util.List;
 
 public interface WorkplaceMapper {
 
-
     WorkplaceEntity toWorkplaceEntity(WorkplaceDto dto);
-
 
     WorkplaceDto toWorkplaceDto(WorkplaceEntity entity);
 
@@ -35,5 +33,4 @@ public interface WorkplaceMapper {
     List<WorkplaceDto> toListDtos(List<WorkplaceEntity> entities);
 
     void updateWorkplaceFromDto(WorkplaceDto workplaceDto, @MappingTarget WorkplaceEntity workplaceEntity);
-
 }

@@ -44,7 +44,12 @@
 </div>
 <form th:action="@{/logout}" method="post">
     <div class="text-center mt-2">
-        <button class="btn btn-danger btn-block" type="submit">Logout</button>
+        <button class="btn btn-danger btn-block w-50" type="submit">Logout</button>
+    </div>
+</form>
+<form th:action="@{/registration/reset_password}" method="get">
+    <div class="text-center mt-2">
+        <button class="btn btn-primary btn-block w-50" type="submit">Change password</button>
     </div>
 </form>
 </body>

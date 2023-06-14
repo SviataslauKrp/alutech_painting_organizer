@@ -32,17 +32,13 @@ public class WorkplaceEntity {
     private MasterEntity master;
 
     public void addWorker(WorkerEntity worker) {
-
         workers.add(worker);
         worker.setWorkplace(this);
-
     }
 
     public void removeWorker(WorkerEntity worker) {
-
         workers.remove(worker);
         worker.leaveWorkplace();
-
     }
 
 }

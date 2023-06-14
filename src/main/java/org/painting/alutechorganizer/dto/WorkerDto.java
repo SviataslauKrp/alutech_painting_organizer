@@ -13,7 +13,6 @@ import javax.validation.constraints.NotNull;
 public class WorkerDto {
 
     private Integer id;
-
     @NotBlank
     private String name;
     @NotBlank
@@ -26,5 +25,4 @@ public class WorkerDto {
     private MasterDto master;
     private String note;
     private Boolean isAvailable;
-
 }

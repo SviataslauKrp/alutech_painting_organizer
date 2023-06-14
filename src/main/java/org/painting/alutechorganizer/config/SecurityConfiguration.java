@@ -35,6 +35,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/registration").not().fullyAuthenticated()
+                .antMatchers("/registration/reset_password").permitAll()
                 .antMatchers("/workplaces/get_all_workplaces").hasAnyRole("WORKER", "MASTER")
                 .antMatchers("/**").hasRole("MASTER")
                 .anyRequest().authenticated()
@@ -57,7 +58,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .logoutUrl("/logout")
                 .permitAll()
                 .logoutSuccessUrl("/login");
-
     }
 
     @Override

@@ -7,5 +7,4 @@ import java.util.List;
 
 public interface WorkplaceRepository extends JpaRepository<WorkplaceEntity, Integer> {
     List<WorkplaceEntity> findByMasterId(Integer masterId);
-
 }

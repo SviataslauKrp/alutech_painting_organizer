@@ -19,7 +19,5 @@ public class MasterDto {
     @NotBlank
     private String surname;
     private List<WorkerDto> workers;
-
     private List<WorkplaceDto> workplaces;
-
 }

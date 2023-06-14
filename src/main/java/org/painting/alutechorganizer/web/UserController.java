@@ -13,13 +13,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
 import java.util.List;
 
 import static org.painting.alutechorganizer.web.MasterController.getMasterId;
@@ -67,10 +65,10 @@ public class UserController {
     }
 
     @PostMapping("/create_worker")
-    public String saveWorker(@ModelAttribute(name = "userForm") @Valid UserEmployee user,
-                             BindingResult userBindingResult,
-                             @ModelAttribute(name = "worker") @Valid WorkerDto worker,
-                             BindingResult workerBindingResult) {
+    public String registerWorker(@ModelAttribute(name = "userForm") @Valid UserEmployee user,
+                                 BindingResult userBindingResult,
+                                 @ModelAttribute(name = "worker") @Valid WorkerDto worker,
+                                 BindingResult workerBindingResult) {
 
         Integer masterId = getMasterId();
         if (workerBindingResult.hasErrors() || userBindingResult.hasErrors()) {
@@ -87,7 +85,6 @@ public class UserController {
 
     @PostMapping("/update_user")
     public String updateUser(@ModelAttribute(name = "principal") UserEmployee user) {
-
         if (!StringUtils.equals(user.getPassword(), user.getPasswordConfirm())) {
             throw new MasterException("The passwords aren't equals");
         }
@@ -95,4 +92,17 @@ public class UserController {
         SecurityContextHolder.clearContext();
         return "redirect:/login";
     }
+
+    @PostMapping("/reset_password")
+    public String resetPassword(@RequestParam(name = "username") @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$") String username) {
+        UserEmployee user = (UserEmployee) userService.loadUserByUsername(username);
+        userService.resetUserPassword(user);
+        return "redirect:/login";
+    }
+
+    @GetMapping("/reset_password")
+    public String getResetPasswordForm() {
+        return "reset_password_form";
+    }
+
 }

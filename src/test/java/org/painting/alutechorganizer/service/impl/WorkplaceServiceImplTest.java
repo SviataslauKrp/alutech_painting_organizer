@@ -168,6 +168,7 @@ class WorkplaceServiceImplTest {
         //when and then
         assertThrows(WorkplaceException.class, () -> service.deleteWorkplaceById(any(Integer.class)));
     }
+
     @Test
     void testUpdateWorkplaceById() {
         //given

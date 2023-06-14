@@ -41,7 +41,6 @@ public class WorkplaceServiceImpl implements WorkplaceService {
 
         List<WorkplaceEntity> allWorkplaceEntities = workplaceRepository.findAll();
         return workplaceMapper.toListDtos(allWorkplaceEntities);
-
     }
 
     @Override
@@ -49,7 +48,6 @@ public class WorkplaceServiceImpl implements WorkplaceService {
 
         WorkplaceEntity workplaceEntity = workplaceRepository.findById(id).orElseThrow(WorkplaceException::new);
         return workplaceMapper.toWorkplaceDto(workplaceEntity);
-
     }
 
     @Transactional

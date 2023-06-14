@@ -33,12 +33,14 @@
 
         <div class="mb-3">
             <label for="newPassword" class="form-label">New password</label>
-            <input type="password" class="form-control" id="newPassword" th:field="*{password}" required pattern=".*\S+.*">
+            <input type="password" class="form-control" id="newPassword" th:field="*{password}" required
+                   pattern=".*\S+.*">
         </div>
 
         <div class="mb-3">
             <label for="newPasswordConfirm">Confirm new password:</label>
-            <input type="password" class="form-control" id="newPasswordConfirm" th:field="*{passwordConfirm}" required pattern=".*\S+.*">
+            <input type="password" class="form-control" id="newPasswordConfirm" th:field="*{passwordConfirm}" required
+                   pattern=".*\S+.*">
         </div>
 
         <input type="hidden" th:value="${param.masterId}" name="masterId">

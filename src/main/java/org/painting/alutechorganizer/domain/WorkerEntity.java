@@ -48,7 +48,6 @@ public class WorkerEntity {
             columnDefinition = "boolean default true")
     private Boolean isAvailable = true;
 
-
     public void leaveWorkplace() {
         workplace = null;
     }

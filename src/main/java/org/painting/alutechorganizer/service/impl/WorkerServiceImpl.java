@@ -12,6 +12,7 @@ import org.painting.alutechorganizer.repository.MasterRepository;
 import org.painting.alutechorganizer.repository.UserEmployeeRepository;
 import org.painting.alutechorganizer.repository.WorkerRepository;
 import org.painting.alutechorganizer.service.WorkerService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -27,21 +28,11 @@ public class WorkerServiceImpl implements WorkerService {
     private final WorkerMapper mapper;
     private final UserEmployeeRepository userRepository;
 
-//    @Transactional
-//    @Override
-//    public WorkerEntity setToMaster(WorkerDto workerDto, Integer masterId) {
-//        MasterEntity masterEntity = masterRepository.findById(masterId).orElseThrow(() -> new MasterException("The master isn't found"));
-//        WorkerEntity workerEntity = mapper.toWorkerEntity(workerDto);
-//        masterEntity.addWorker(workerEntity);
-//        return workerEntity;
-//    }
-
     @Override
     public List<WorkerDto> getAllWorkers() {
 
         List<WorkerEntity> allWorkersEntities = workerRepository.findAll();
         return mapper.toListDtos(allWorkersEntities);
-
     }
 
     @Override
@@ -49,16 +40,13 @@ public class WorkerServiceImpl implements WorkerService {
 
         List<WorkerEntity> workerEntity = workerRepository.findBySurnameAndMasterId(surname, masterId).orElseThrow(() -> new WorkerException("The worker isn't found"));
         return mapper.toListDtos(workerEntity);
-
     }
 
     @Transactional
     @Override
     public void deleteWorkerById(Integer id) {
-        WorkerEntity worker = workerRepository.findById(id).orElseThrow(() -> new WorkerException("The worker isn't found"));
-        UserEmployee user = worker.getUser();
+        UserEmployee user = userRepository.findByWorkerId(id).orElseThrow(() -> new UsernameNotFoundException("There is no such user"));
         userRepository.delete(user);
-
     }
 
     @Transactional
@@ -73,7 +61,6 @@ public class WorkerServiceImpl implements WorkerService {
         }
 
         mapper.updateWorkerFromDto(newWorkerVersion, oldWorkerVersion);
-
     }
 
     @Override
@@ -86,8 +73,14 @@ public class WorkerServiceImpl implements WorkerService {
     @Override
     public WorkerEntity setToMaster(WorkerDto workerDto, Integer masterId) {
         MasterEntity newMaster = masterRepository.findById(masterId).orElseThrow(() -> new MasterException("The master isn't found"));
-        WorkerEntity workerEntity = workerRepository.findById(workerDto.getId()).orElseThrow(() -> new WorkerException("The worker isn't found"));
+        WorkerEntity workerEntity;
+        if (workerDto.getId() != null) {
+            workerEntity = workerRepository.findById(workerDto.getId()).orElseThrow(() -> new WorkerException("The worker isn't found"));
+        } else {
+            workerEntity = mapper.toWorkerEntity(workerDto);
+        }
         newMaster.addWorker(workerEntity);
+        workerRepository.save(workerEntity);
         return workerEntity;
     }
 

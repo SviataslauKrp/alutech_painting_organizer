@@ -19,7 +19,6 @@ import org.painting.alutechorganizer.repository.WorkerRepository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -172,6 +171,7 @@ class WorkerServiceImplTest {
         assertEquals(updatedEntity.getSurname(), value.getSurname());
 
     }
+
     @Test
     void testGetWorkerById() {
 

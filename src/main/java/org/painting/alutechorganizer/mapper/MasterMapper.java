@@ -28,8 +28,6 @@ public interface MasterMapper {
     @Mapping(target = "master", ignore = true)
     WorkplaceDto toWorkplaceDto(WorkplaceEntity workplaceEntity);
 
-    List<MasterEntity> toListEntities(List<MasterDto> dtos);
-
     List<MasterDto> toListDtos(List<MasterEntity> entities);
 
     @Mapping(target = "user", ignore = true)

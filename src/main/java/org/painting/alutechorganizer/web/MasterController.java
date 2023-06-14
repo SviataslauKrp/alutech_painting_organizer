@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.painting.alutechorganizer.domain.UserEmployee;
 import org.painting.alutechorganizer.dto.MasterDto;
 import org.painting.alutechorganizer.service.MasterService;
-import org.painting.alutechorganizer.service.impl.UserEmployeeService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +19,6 @@ import java.util.Map;
 public class MasterController {
 
     private final MasterService masterService;
-    private final UserEmployeeService userService;
-
 
     //read
 
@@ -37,12 +34,12 @@ public class MasterController {
         }
 
         return new ModelAndView("main_page", "master", master);
-
     }
 
     //update
     @GetMapping("/update_master")
     public ModelAndView getUpdatePage() {
+
         Integer masterId = getMasterId();
         MasterDto master = masterService.getMasterById(masterId);
         UserEmployee principal = (UserEmployee) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -54,6 +51,7 @@ public class MasterController {
 
     @PostMapping("/update_master")
     public String updateMasterById(@ModelAttribute(name = "master") MasterDto master) {
+
         Integer masterId = getMasterId();
         masterService.updateMasterById(master, masterId);
         return "redirect:/masters/choose_master";
@@ -63,6 +61,7 @@ public class MasterController {
     //delete
     @GetMapping("/delete_master")
     public String deleteMasterById() {
+
         Integer masterId = getMasterId();
         masterService.deleteMasterById(masterId);
         SecurityContextHolder.clearContext();
@@ -70,6 +69,7 @@ public class MasterController {
     }
 
     static Integer getMasterId() {
+
         UserEmployee principal = (UserEmployee) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return principal.getMaster().getId();
     }

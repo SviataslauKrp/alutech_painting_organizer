@@ -8,8 +8,8 @@ import org.painting.alutechorganizer.exc.MasterException;
 import org.painting.alutechorganizer.mapper.MasterMapper;
 import org.painting.alutechorganizer.repository.MasterRepository;
 import org.painting.alutechorganizer.repository.UserEmployeeRepository;
-import org.painting.alutechorganizer.repository.WorkerRepository;
 import org.painting.alutechorganizer.service.MasterService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -41,9 +41,8 @@ public class MasterServiceImpl implements MasterService {
             throw new MasterException("You need to transfer all your workers to another master");
         }
 
-        UserEmployee user = masterEntity.getUser();
+        UserEmployee user = userRepository.findByMasterId(id).orElseThrow(() -> new UsernameNotFoundException("There is no such user"));
         userRepository.delete(user);
-
     }
 
     @Override
@@ -51,7 +50,6 @@ public class MasterServiceImpl implements MasterService {
 
         MasterEntity masterEntity = masterRepository.findById(id).orElseThrow(() -> new MasterException("The master isn't found"));
         return masterMapper.toMasterDto(masterEntity);
-
     }
 
     @Transactional

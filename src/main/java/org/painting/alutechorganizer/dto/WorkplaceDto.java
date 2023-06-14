@@ -17,5 +17,4 @@ public class WorkplaceDto {
     private String name;
     private List<WorkerDto> workers;
     private MasterDto master;
-
 }

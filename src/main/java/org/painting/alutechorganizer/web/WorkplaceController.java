@@ -98,7 +98,6 @@ public class WorkplaceController {
 
         workplaceService.addWorkerToWorkplace(workerId, workplaceId);
         return "redirect:/workplaces/get_all_workplaces";
-
     }
 
     @PostMapping("/remove_worker_from_workplace")

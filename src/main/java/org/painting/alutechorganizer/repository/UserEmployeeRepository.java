@@ -9,4 +9,8 @@ public interface UserEmployeeRepository extends JpaRepository<UserEmployee, Inte
 
     Optional<UserEmployee> findByUsername(String name);
 
+    Optional<UserEmployee> findByWorkerId(Integer workerId);
+
+    Optional<UserEmployee> findByMasterId(Integer masterId);
+
 }

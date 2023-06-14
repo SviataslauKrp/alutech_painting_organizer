@@ -31,6 +31,7 @@ public class UserEmployeeService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final MasterMapper masterMapper;
     private final WorkerService workerService;
+    private final EmailSenderService emailSender;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -38,7 +39,9 @@ public class UserEmployeeService implements UserDetailsService {
     }
 
     @Transactional
-    public boolean saveUser(UserEmployee user, MasterDto masterDto) {
+    public boolean saveUser(UserEmployee user,
+                            MasterDto masterDto) {
+
         Optional<UserEmployee> userFromDb = userRepository.findByUsername(user.getUsername());
         if (userFromDb.isPresent()) {
             return false;
@@ -54,7 +57,9 @@ public class UserEmployeeService implements UserDetailsService {
     }
 
     @Transactional
-    public boolean saveUser(UserEmployee user, WorkerDto workerDto, Integer masterId) {
+    public boolean saveUser(UserEmployee user,
+                            WorkerDto workerDto,
+                            Integer masterId) {
 
         Optional<UserEmployee> userFromDb = userRepository.findByUsername(user.getUsername());
         if (userFromDb.isPresent()) {
@@ -77,6 +82,14 @@ public class UserEmployeeService implements UserDetailsService {
             oldUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
             userRepository.save(oldUser);
         }
+    }
+
+    @Transactional
+    public void resetUserPassword(UserEmployee user) {
+        String newPassword = RandomPasswordGenerator.generateRandomString(6);
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+        emailSender.sendEmail(user.getUsername(), newPassword);
     }
 
 }
